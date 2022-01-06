@@ -1,0 +1,26 @@
+type: code
+files:
+- name: src/Main.java
+  visible: true
+  text: |-
+    class Main {
+        public static void main(String[] args) {
+            // put your code here
+        }
+    }
+  learner_created: false
+- name: src/ReadData.java
+  visible: true
+  learner_created: true
+- name: src/FindMax.java
+  visible: true
+  learner_created: true
+- name: src/CountGreaterNumber.java
+  visible: true
+  learner_created: true
+feedback_link: https://hyperskill.org/learn/step/2231#comment
+status: Solved
+feedback:
+  message: <html>Correct solution</html>
+  time: Sun, 10 Oct 2021 08:10:28 UTC
+record: -1
