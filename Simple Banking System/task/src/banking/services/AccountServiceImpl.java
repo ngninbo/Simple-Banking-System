@@ -14,8 +14,8 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public void addIncome() {
-        long income = PromptUser.enterAmount("\nEnter income:");
-        cardService.addIncome(cardNumber, income);
+        long income = PromptUser.getAmountFromUser("\nEnter income:");
+        cardService.updateBalanceByCardNumber(cardNumber, income);
         System.out.println("Income was added!\n");
     }
 
@@ -23,32 +23,32 @@ public class AccountServiceImpl implements AccountService {
     public void doTransfer() {
         String targetCardNumber;
         System.out.println("\nTransfer");
-        targetCardNumber = PromptUser.inputTargetCardNumber();
+        targetCardNumber = PromptUser.getTargetCardNumberFromUser();
 
-        if (CardService.checkCreditCardNumber(targetCardNumber)) {
-            if (!targetCardNumber.equals(cardNumber)) {
-                if (Objects.equals(cardService.getCardByNumber(targetCardNumber).getCreditCardNumber(), targetCardNumber)) {
-                    long amount = PromptUser.enterAmount("Enter how much money you want to transfer:");
-                    if (amount <= cardService.getBalance(cardNumber)) {
-                        cardService.setBalance(cardNumber, targetCardNumber, amount);
-                        System.out.println("Success!\n");
-                    } else {
-                        System.out.println("Not enough money!\n");
-                    }
-                } else {
-                    System.out.println("Such a card does not exist.\n");
-                }
-            } else {
-                System.out.println("You can't transfer money to the same account!\n");
-            }
-        } else {
+        if (!CardService.checkCreditCardNumber(targetCardNumber)) {
             System.out.println("Probably you made a mistake in the card number. Please try again!\n");
+        } else {
+            if (targetCardNumber.equals(cardNumber)) {
+                System.out.println("You can't transfer money to the same account!\n");
+            } else {
+                if (!Objects.equals(cardService.findByCardNumber(targetCardNumber).getCreditCardNumber(), targetCardNumber)) {
+                    System.out.println("Such a card does not exist.\n");
+                } else {
+                    long amount = PromptUser.getAmountFromUser("Enter how much money you want to transfer:");
+                    if (amount > cardService.readBalanceByCardNumber(cardNumber)) {
+                        System.out.println("Not enough money!\n");
+                    } else {
+                        cardService.updateBalanceByCardNumber(cardNumber, targetCardNumber, amount);
+                        System.out.println("Success!\n");
+                    }
+                }
+            }
         }
     }
 
     @Override
     public void printAccountBalance() {
-        System.out.println("\nBalance: " + cardService.getBalance(cardNumber) +"\n");
+        System.out.println("\nBalance: " + cardService.readBalanceByCardNumber(cardNumber) +"\n");
     }
 
     @Override

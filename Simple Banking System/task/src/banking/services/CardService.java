@@ -5,11 +5,11 @@ import banking.models.Card;
 public interface CardService {
 
     void saveCard(Card card);
-    Card getCardByNumber(String cardNumber);
-    long getBalance(String cardNumber);
-    void addIncome(String cardNumber, long income);
+    Card findByCardNumber(String cardNumber);
+    long readBalanceByCardNumber(String cardNumber);
+    void updateBalanceByCardNumber(String cardNumber, long income);
     void deleteCard(String cardNumber);
-    void setBalance(String cardNumber, String targetCardNumber, long amount);
+    void updateBalanceByCardNumber(String cardNumber, String targetCardNumber, long amount);
     boolean validateCard(String cardNumber, String pin);
 
     /**

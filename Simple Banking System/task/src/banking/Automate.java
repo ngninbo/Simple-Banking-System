@@ -1,7 +1,7 @@
 package banking;
 
 import banking.generator.CreditCardGenerator;
-import banking.models.Account;
+import banking.services.AccountSessionService;
 import banking.models.Card;
 import banking.repository.CardRepository;
 import banking.services.CardService;
@@ -102,12 +102,12 @@ public class Automate {
      * Login into account to perform transactions
      */
     private void loginToAccount() {
-        String cardNumber = PromptUser.getCardInfo("\nEnter your card number:");
-        String pin = PromptUser.getCardInfo("Enter your PIN:");
+        String cardNumber = PromptUser.getCardInformationFromUser("\nEnter your card number:");
+        String pin = PromptUser.getCardInformationFromUser("Enter your PIN:");
 
         if (cardService.validateCard(cardNumber, pin)) {
             boolean login = true;
-            Account account = Account.accountSession(cardNumber, cardService);
+            AccountSessionService account = AccountSessionService.accountSession(cardNumber, cardService);
             printLoginState(true);
 
             while (login) {

@@ -17,17 +17,17 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public Card getCardByNumber(String cardNumber) {
+    public Card findByCardNumber(String cardNumber) {
         return repository.getCardByNumber(cardNumber);
     }
 
     @Override
-    public long getBalance(String cardNumber) {
+    public long readBalanceByCardNumber(String cardNumber) {
         return repository.getBalance(cardNumber);
     }
 
     @Override
-    public void addIncome(String cardNumber, long income) {
+    public void updateBalanceByCardNumber(String cardNumber, long income) {
         repository.setBalance(cardNumber, income);
     }
 
@@ -37,7 +37,7 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public void setBalance(String cardNumber, String targetCardNumber, long amount) {
+    public void updateBalanceByCardNumber(String cardNumber, String targetCardNumber, long amount) {
         repository.setBalance(cardNumber, targetCardNumber, amount);
     }
 
@@ -45,7 +45,7 @@ public class CardServiceImpl implements CardService {
     public boolean validateCard(String cardNumber, String pin) {
         boolean isValid = false;
         if (CardService.checkCreditCardNumber(cardNumber)) {
-            Card card = getCardByNumber(cardNumber);
+            Card card = findByCardNumber(cardNumber);
             if (card != null) {
                 if (card.getPin().equals(pin)) {
                     isValid = true;

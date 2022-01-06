@@ -1,23 +1,19 @@
-package banking.models;
-
-import banking.services.AccountService;
-import banking.services.AccountServiceImpl;
-import banking.services.CardService;
+package banking.services;
 
 /**
  * This class is for performing transaction on an account after logging in.
  * @author Beauclair Dongmo Ngnintedem
  */
-public class Account {
+public class AccountSessionService {
 
     private final AccountService accountService;
 
-    private Account(String cardNumber, CardService cardService) {
+    private AccountSessionService(String cardNumber, CardService cardService) {
         this.accountService = new AccountServiceImpl(cardNumber, cardService);
     }
 
-    public static Account accountSession(String cardNumber, CardService cardService) {
-        return new Account(cardNumber, cardService);
+    public static AccountSessionService accountSession(String cardNumber, CardService cardService) {
+        return new AccountSessionService(cardNumber, cardService);
     }
 
     /**

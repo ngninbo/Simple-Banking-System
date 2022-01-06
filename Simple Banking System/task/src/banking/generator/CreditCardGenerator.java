@@ -21,7 +21,7 @@ public class CreditCardGenerator {
 
 
     private CreditCardGenerator() {
-        generateCreditCardNumber();
+        generateValidCreditCardNumber();
         this.pin = generatePin();
     }
 
@@ -57,7 +57,7 @@ public class CreditCardGenerator {
     /**
      * Generate card number and validate it
      */
-    private void generateCreditCardNumber() {
+    private void generateValidCreditCardNumber() {
         this.usedAccountIdentifiers = new ArrayList<>();
         StringBuilder tmpCardNumber = new StringBuilder();
         generateAccountIdentifier();

@@ -819,9 +819,6 @@ files:
         }
     }
   learner_created: true
-- name: src/banking/models/Account.java
-  visible: true
-  learner_created: true
 - name: src/banking/models/Card.java
   visible: true
   text: |+
@@ -1185,6 +1182,9 @@ files:
   visible: true
   learner_created: true
 - name: src/banking/services/PromptUser.java
+  visible: true
+  learner_created: true
+- name: src/banking/services/AccountSessionService.java
   visible: true
   learner_created: true
 feedback_link: https://hyperskill.org/learn/step/8428#comment

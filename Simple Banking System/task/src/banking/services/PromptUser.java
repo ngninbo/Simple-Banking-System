@@ -9,7 +9,7 @@ public interface PromptUser {
      * @param command Text message telling the user what to da, e.e. Enter amount
      * @return Value entered by the user
      */
-    static long enterAmount(String command) {
+    static long getAmountFromUser(String command) {
         System.out.println(command);
         Scanner scanner = new Scanner(System.in);
         return scanner.nextLong();
@@ -19,7 +19,7 @@ public interface PromptUser {
      * Prompt the user to enter the card number to which money has to be transfer
      * @return Target card number to which money has to be transfer
      */
-    static String inputTargetCardNumber() {
+    static String getTargetCardNumberFromUser() {
         String targetCardNumber;
         System.out.println("Enter card number:");
         Scanner scanner = new Scanner(System.in);
@@ -32,7 +32,7 @@ public interface PromptUser {
      * @param command String message
      * @return User input
      */
-    static String getCardInfo(String command) {
+    static String getCardInformationFromUser(String command) {
         String input;
         System.out.println(command);
         Scanner scanner = new Scanner(System.in);
