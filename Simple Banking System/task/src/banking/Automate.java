@@ -7,6 +7,7 @@ import banking.repository.CardRepository;
 import banking.services.CardService;
 import banking.services.CardServiceImpl;
 import banking.services.PromptUser;
+import banking.util.DisplayMessage;
 
 import java.util.Scanner;
 
@@ -59,24 +60,13 @@ public class Automate {
      * @return User selection
      */
     private int displaySelectionMenu(Menu menu) {
-        StringBuilder options;
+
         switch (menu) {
             case START:
-                options = new StringBuilder();
-                options.append("1. Create an account\n")
-                        .append("2. Log into account\n")
-                        .append("0. Exit");
-                selectedOption = displayOptions(options);
+                selectedOption = displayOptions(DisplayMessage.START_MENU_ITEMS);
                 break;
             case LOGIN:
-                options = new StringBuilder();
-                options.append("1. Balance\n")
-                        .append("2. Add income\n")
-                        .append("3. Do transfer\n")
-                        .append("4. Close account\n")
-                        .append("5. Log out\n")
-                        .append("0. Exit");
-                selectedOption = displayOptions(options);
+                selectedOption = displayOptions(DisplayMessage.LOGIN_SESSION_MENU_ITEMS);
                 break;
         }
 
@@ -90,20 +80,17 @@ public class Automate {
         CreditCardGenerator generator = CreditCardGenerator.createCreditCardGenerator();
         Card card = generator.getCard();
         cardService.saveCard(card);
-        StringBuilder creationResult;
-        creationResult = new StringBuilder();
-        creationResult.append("\nYour card has been created\n")
-                .append("Your card number:\n").append(card.getCreditCardNumber()).append("\n")
-                .append("Your card PIN:\n").append(card.getPin()).append("\n");
-        System.out.println(creationResult);
+
+        System.out.printf(DisplayMessage.CARD_INFORMATION_AFTER_CREATION_TEXT,
+                card.getCreditCardNumber(), card.getPin());
     }
 
     /**
      * Login into account to perform transactions
      */
     private void loginToAccount() {
-        String cardNumber = PromptUser.getCardInformationFromUser("\nEnter your card number:");
-        String pin = PromptUser.getCardInformationFromUser("Enter your PIN:");
+        String cardNumber = PromptUser.getCardInformationFromUser(DisplayMessage.USER_CARD_NUMBER_INPUT_REQUEST_MSG);
+        String pin = PromptUser.getCardInformationFromUser(DisplayMessage.USER_PIN_INPUT_REQUEST_MSG);
 
         if (cardService.validateCard(cardNumber, pin)) {
             boolean login = true;
@@ -145,7 +132,7 @@ public class Automate {
      * Say 'Bye' and end the program
      */
     private void sayBye() {
-        System.out.println("\nBye");
+        System.out.println(DisplayMessage.BYE_MSG);
         System.exit(0);
     }
 
@@ -153,7 +140,7 @@ public class Automate {
      * Informed user that the input card number or PIN is wrong when validation failed
      */
     private void printWrongInputsMessage() {
-        System.out.println("Wrong card number or PIN!\n");
+        System.out.println(DisplayMessage.WRONG_CARD_NUMBER_OR_PIN_ERROR_MSG);
     }
 
     /**
@@ -177,10 +164,7 @@ public class Automate {
      */
     private void printLoginState(boolean loginState) {
         String state;
-        state = "\nYou have successfully logged out!\n";
-        if (loginState) {
-            state = "\nYou have successfully logged in!\n";
-        }
+        state = loginState ? DisplayMessage.LOG_IN_SUCCEED_MSG : DisplayMessage.LOG_OUT_SUCCEED_MSG;
         System.out.println(state);
     }
 }
