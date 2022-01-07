@@ -6,7 +6,7 @@ import banking.models.Card;
 import banking.repository.CardRepository;
 import banking.services.CardService;
 import banking.services.CardServiceImpl;
-import banking.services.PromptUser;
+import banking.services.RequestUserInput;
 import banking.util.DisplayMessage;
 
 import java.util.Scanner;
@@ -89,8 +89,8 @@ public class Automate {
      * Login into account to perform transactions
      */
     private void loginToAccount() {
-        String cardNumber = PromptUser.getCardInformationFromUser(DisplayMessage.USER_CARD_NUMBER_INPUT_REQUEST_MSG);
-        String pin = PromptUser.getCardInformationFromUser(DisplayMessage.USER_PIN_INPUT_REQUEST_MSG);
+        String cardNumber = RequestUserInput.requestCardInformation(DisplayMessage.USER_CARD_NUMBER_INPUT_REQUEST_MSG);
+        String pin = RequestUserInput.requestCardInformation(DisplayMessage.USER_PIN_INPUT_REQUEST_MSG);
 
         if (cardService.validateCard(cardNumber, pin)) {
             boolean login = true;

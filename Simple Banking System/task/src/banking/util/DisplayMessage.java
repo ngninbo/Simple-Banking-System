@@ -28,5 +28,7 @@ public class DisplayMessage {
     public static final String WRONG_CARD_NUMBER_OR_PIN_ERROR_MSG = "\nWrong card number or PIN!\n";
     public static final String LOG_OUT_SUCCEED_MSG = "\nYou have successfully logged out!\n";
     public static final String LOG_IN_SUCCEED_MSG = "\nYou have successfully logged in!\n";
-    public static final String CARD_INFORMATION_AFTER_CREATION_TEXT = "\nYour card has been created\nYour card number:\n%s\nYour card PIN:\n%s\n\n";
+    public static final String CARD_INFORMATION_AFTER_CREATION_TEXT = "\nYour card has been created\n" +
+            "Your card number:\n%s\nYour card PIN:\n%s\n\n";
+    public static final String TARGET_CARD_NUMBER_INPUT_REQUEST_MSG = "Enter card number:";
 }
