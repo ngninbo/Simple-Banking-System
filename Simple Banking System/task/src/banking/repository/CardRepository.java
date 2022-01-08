@@ -20,7 +20,7 @@ public class CardRepository {
         String url = "jdbc:sqlite:" + filename;
         dataSource = new SQLiteDataSource();
         dataSource.setUrl(url);
-        createCardTable();
+        createTableCard();
     }
 
     public static CardRepository createCardRepository(String filename) {
@@ -54,7 +54,7 @@ public class CardRepository {
     /**
      * Create card table in the database if not exists
      */
-    public void createCardTable() {
+    public void createTableCard() {
 
         query = "BEGIN TRANSACTION;\n" +
                 "CREATE TABLE IF NOT EXISTS 'card'('id' INTEGER PRIMARY KEY, " +
@@ -104,7 +104,7 @@ public class CardRepository {
      * @param number Card number
      * @return account balance
      */
-    public long getBalance(String number) {
+    public long readCardByNumberAndReturnBalance(String number) {
         query = "SELECT balance FROM card WHERE number = ?";
 
         long balance = 0L;
@@ -128,7 +128,7 @@ public class CardRepository {
      * @param cardNumber Card number
      * @param income money to deposit to the account
      */
-    public void updateBalanceByCardNumber(String cardNumber, long income) {
+    public void updateCardByNumber(String cardNumber, long income) {
 
         query = "UPDATE card SET balance = (balance + ?) WHERE number = ?";
 
@@ -154,7 +154,7 @@ public class CardRepository {
      * @param targetCardNumber card number of target account
      * @param amount amount of money to transfer to @param targetCardNumber
      */
-    public void updateBalanceByCurrentAndTargetCardNumber(String currentCardNumber, String targetCardNumber, long amount) {
+    public void updateCardsByNumbers(String currentCardNumber, String targetCardNumber, long amount) {
 
         query = "UPDATE card SET balance = (balance + ?) WHERE number = ?";
 

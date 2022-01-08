@@ -26,12 +26,12 @@ public class CardServiceImpl implements CardService {
 
     @Override
     public long readBalanceByCardNumber(String cardNumber) {
-        return repository.getBalance(cardNumber);
+        return repository.readCardByNumberAndReturnBalance(cardNumber);
     }
 
     @Override
     public void updateBalanceByCardNumber(String cardNumber, long income) {
-        repository.updateBalanceByCardNumber(cardNumber, income);
+        repository.updateCardByNumber(cardNumber, income);
     }
 
     @Override
@@ -41,7 +41,7 @@ public class CardServiceImpl implements CardService {
 
     @Override
     public void updateBalanceByCardNumber(String cardNumber, String targetCardNumber, long amount) {
-        repository.updateBalanceByCurrentAndTargetCardNumber(cardNumber, targetCardNumber, amount);
+        repository.updateCardsByNumbers(cardNumber, targetCardNumber, amount);
     }
 
     @Override
