@@ -10,7 +10,7 @@ public class SqlQuery {
             "COMMIT;";
 
     public static final String INSERT_INTO_CARD_NUMBER_PIN_BALANCE_VALUES = "INSERT INTO card (number, pin, balance) VALUES (?, ?, ?);";
-    public static final String CARD_WHERE_NUMBER = "SELECT * FROM card WHERE number = ?";
+    public static final String SELECT_FROM_CARD_WHERE_NUMBER = "SELECT * FROM card WHERE number = ?";
     public static final String SELECT_BALANCE_FROM_CARD_WHERE_NUMBER = "SELECT balance FROM card WHERE number = ?";
     public static final String UPDATE_CARD_INCREASE_BALANCE_WHERE_NUMBER = "UPDATE card SET balance = (balance + ?) WHERE number = ?";
     public static final String UPDATE_CARD_DECREASE_BALANCE_WHERE_NUMBER = "UPDATE card SET balance = (balance - ?) WHERE number = ?";

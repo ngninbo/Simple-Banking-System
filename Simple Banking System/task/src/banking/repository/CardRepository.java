@@ -74,7 +74,7 @@ public class CardRepository {
 
         Card card = null;
         try (Connection connection = dataSource.getConnection()) {
-            statement = connection.prepareStatement(SqlQuery.CARD_WHERE_NUMBER);
+            statement = connection.prepareStatement(SqlQuery.SELECT_FROM_CARD_WHERE_NUMBER);
             statement.setString(1, cardNumber);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
