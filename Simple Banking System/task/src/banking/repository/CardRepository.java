@@ -201,21 +201,8 @@ public class CardRepository {
 
     public Optional<Card> findCardByNumberAndPin(String cardNumber, String pin) {
 
-        query = "SELECT * FROM card WHERE number = ?";
-        Card card = null;
-        try (Connection connection = dataSource.getConnection()) {
-            statement = connection.prepareStatement(query);
-            statement.setString(1, cardNumber);
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                card = new Card(resultSet.getString("number"),
-                        resultSet.getString("pin"), resultSet.getInt("balance"));
-            }
+        Optional<Card> card = findCardByNumber(cardNumber);
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return card != null && pin.equals(card.getPin()) ? Optional.of(card) : Optional.empty();
+        return pin.equals(card.orElseThrow().getPin()) ? card : Optional.empty();
     }
 }
