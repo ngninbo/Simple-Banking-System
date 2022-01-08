@@ -4,14 +4,14 @@ import banking.util.DisplayMessage;
 
 import java.util.Scanner;
 
-public interface RequestUserInput {
+public interface RequestUserTo {
 
 
     /**
      * @param command Text message telling the user what to da, e.e. Enter amount
      * @return Value entered by the user
      */
-    static long requestAmountForTransaction(String command) {
+    static long inputAmount(String command) {
         System.out.println(command);
         Scanner scanner = new Scanner(System.in);
         return scanner.nextLong();
@@ -21,8 +21,8 @@ public interface RequestUserInput {
      * Prompt the user to enter the card number to which money has to be transfer
      * @return Target card number to which money has to be transfer
      */
-    static String requestTargetCardNumberForTransfer() {
-        return requestCardInformation(DisplayMessage.TARGET_CARD_NUMBER_INPUT_REQUEST_MSG);
+    static String inputTargetCardNumber() {
+        return inputCardInformation(DisplayMessage.TARGET_CARD_NUMBER_INPUT_REQUEST_MSG);
     }
 
     /**
@@ -30,7 +30,7 @@ public interface RequestUserInput {
      * @param command String message
      * @return Card number or PIN
      */
-    static String requestCardInformation(String command) {
+    static String inputCardInformation(String command) {
         String input;
         System.out.println(command);
         Scanner scanner = new Scanner(System.in);

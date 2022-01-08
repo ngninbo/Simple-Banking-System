@@ -3,6 +3,8 @@ package banking.services;
 import banking.models.Card;
 import banking.repository.CardRepository;
 
+import java.util.Optional;
+
 public class CardServiceImpl implements CardService {
 
     private final CardRepository repository;
@@ -17,8 +19,9 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public Card findByCardNumber(String cardNumber) {
-        return repository.getCardByNumber(cardNumber);
+    public Optional<Card> findCardByNumber(String cardNumber) {
+
+        return repository.findCardByNumber(cardNumber);
     }
 
     @Override
@@ -28,30 +31,31 @@ public class CardServiceImpl implements CardService {
 
     @Override
     public void updateBalanceByCardNumber(String cardNumber, long income) {
-        repository.setBalance(cardNumber, income);
+        repository.updateBalanceByCardNumber(cardNumber, income);
     }
 
     @Override
-    public void deleteCard(String cardNumber) {
-        repository.deleteCard(cardNumber);
+    public void deleteCardByNumber(String cardNumber) {
+        repository.deleteCardByCardNumber(cardNumber);
     }
 
     @Override
     public void updateBalanceByCardNumber(String cardNumber, String targetCardNumber, long amount) {
-        repository.setBalance(cardNumber, targetCardNumber, amount);
+        repository.updateBalanceByCurrentAndTargetCardNumber(cardNumber, targetCardNumber, amount);
     }
 
     @Override
-    public boolean validateCard(String cardNumber, String pin) {
-        boolean isValid = false;
-        if (CardService.checkCreditCardNumber(cardNumber)) {
-            Card card = findByCardNumber(cardNumber);
-            if (card != null) {
-                if (card.getPin().equals(pin)) {
-                    isValid = true;
-                }
-            }
-        }
-        return isValid;
+    public boolean isCardAvailableByCardNumberAndPin(String cardNumber, String pin) {
+        return CardService.isValid(cardNumber) && isCardAvailableByCardNumberAndPin(cardNumber, pin);
+    }
+
+    @Override
+    public boolean isCardByNumberPresent(String targetCardNumber) {
+        return this.findCardByNumber(targetCardNumber).isPresent();
+    }
+
+    @Override
+    public boolean isCardByNumberAndPinPresent(String cardNumber, String pin) {
+        return repository.findCardByNumberAndPin(cardNumber, pin).isPresent();
     }
 }

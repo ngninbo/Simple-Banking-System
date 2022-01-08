@@ -6,7 +6,7 @@ import banking.models.Card;
 import banking.repository.CardRepository;
 import banking.services.CardService;
 import banking.services.CardServiceImpl;
-import banking.services.RequestUserInput;
+import banking.services.RequestUserTo;
 import banking.util.DisplayMessage;
 
 import java.util.Scanner;
@@ -47,7 +47,7 @@ public class Automate {
                     loginToAccount();
                     break;
                 case 0:
-                    sayBye();
+                    printByeMessage();
                     exit = true;
                     break;
             }
@@ -89,10 +89,10 @@ public class Automate {
      * Login into account to perform transactions
      */
     private void loginToAccount() {
-        String cardNumber = RequestUserInput.requestCardInformation(DisplayMessage.USER_CARD_NUMBER_INPUT_REQUEST_MSG);
-        String pin = RequestUserInput.requestCardInformation(DisplayMessage.USER_PIN_INPUT_REQUEST_MSG);
+        String cardNumber = RequestUserTo.inputCardInformation(DisplayMessage.USER_CARD_NUMBER_INPUT_REQUEST_MSG);
+        String pin = RequestUserTo.inputCardInformation(DisplayMessage.USER_PIN_INPUT_REQUEST_MSG);
 
-        if (cardService.validateCard(cardNumber, pin)) {
+        if (isCardNumberValidAndCardByNumberAndPinExists(cardNumber, pin)) {
             boolean login = true;
             AccountSessionService account = AccountSessionService.accountSession(cardNumber, cardService);
             printLoginState(true);
@@ -119,19 +119,23 @@ public class Automate {
                         login = false;
                         break;
                     case 0:
-                        sayBye();
+                        printByeMessage();
                         break;
                 }
             }
         } else {
-            printWrongInputsMessage();
+            printWrongCardNumberOrPinErrorMessage();
         }
+    }
+
+    private boolean isCardNumberValidAndCardByNumberAndPinExists(String cardNumber, String pin) {
+        return CardService.isValid(cardNumber) && cardService.isCardByNumberAndPinPresent(cardNumber, pin);
     }
 
     /**
      * Say 'Bye' and end the program
      */
-    private void sayBye() {
+    private void printByeMessage() {
         System.out.println(DisplayMessage.BYE_MSG);
         System.exit(0);
     }
@@ -139,7 +143,7 @@ public class Automate {
     /**
      * Informed user that the input card number or PIN is wrong when validation failed
      */
-    private void printWrongInputsMessage() {
+    private void printWrongCardNumberOrPinErrorMessage() {
         System.out.println(DisplayMessage.WRONG_CARD_NUMBER_OR_PIN_ERROR_MSG);
     }
 

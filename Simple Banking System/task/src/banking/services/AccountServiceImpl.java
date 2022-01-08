@@ -2,8 +2,6 @@ package banking.services;
 
 import banking.util.DisplayMessage;
 
-import java.util.Objects;
-
 public class AccountServiceImpl implements AccountService {
 
     private final String cardNumber;
@@ -16,7 +14,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public void addIncome() {
-        long income = RequestUserInput.requestAmountForTransaction(DisplayMessage.INCOME_INPUT_REQUEST_MSG);
+        long income = RequestUserTo.inputAmount(DisplayMessage.INCOME_INPUT_REQUEST_MSG);
         cardService.updateBalanceByCardNumber(cardNumber, income);
         System.out.println(DisplayMessage.INCOME_ADDED_TEXT);
     }
@@ -25,18 +23,18 @@ public class AccountServiceImpl implements AccountService {
     public void doTransfer() {
         String targetCardNumber;
         System.out.println(DisplayMessage.TRANSFER_TEXT);
-        targetCardNumber = RequestUserInput.requestTargetCardNumberForTransfer();
+        targetCardNumber = RequestUserTo.inputTargetCardNumber();
 
-        if (!CardService.checkCreditCardNumber(targetCardNumber)) {
+        if (!CardService.isValid(targetCardNumber)) {
             System.out.println(DisplayMessage.CARD_NUMBER_ERROR_MSG);
         } else {
             if (targetCardNumber.equals(cardNumber)) {
                 System.out.println(DisplayMessage.SAME_ACCOUNT_ERROR_MSG);
             } else {
-                if (!Objects.equals(cardService.findByCardNumber(targetCardNumber).getCreditCardNumber(), targetCardNumber)) {
+                if (!isCardByNumberPresent(targetCardNumber)) {
                     System.out.println(DisplayMessage.CARD_NOT_EXISTS_ERROR_MSG);
                 } else {
-                    long amount = RequestUserInput.requestAmountForTransaction(DisplayMessage.AMOUNT_TO_TRANSFER_INPUT_REQUEST_MSG);
+                    long amount = RequestUserTo.inputAmount(DisplayMessage.AMOUNT_TO_TRANSFER_INPUT_REQUEST_MSG);
                     if (amount > cardService.readBalanceByCardNumber(cardNumber)) {
                         System.out.println(DisplayMessage.NOT_ENOUGH_MONEY_ERROR_MSG);
                     } else {
@@ -48,6 +46,10 @@ public class AccountServiceImpl implements AccountService {
         }
     }
 
+    private boolean isCardByNumberPresent(String targetCardNumber) {
+        return cardService.isCardByNumberPresent(targetCardNumber);
+    }
+
     @Override
     public void printAccountBalance() {
         System.out.printf(DisplayMessage.ACCOUNT_BALANCE_TEXT, cardService.readBalanceByCardNumber(cardNumber));
@@ -55,7 +57,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public void closeAccount() {
-        cardService.deleteCard(cardNumber);
+        cardService.deleteCardByNumber(cardNumber);
         System.out.println(DisplayMessage.ACCOUNT_CLOSED_TEXT);
     }
 }

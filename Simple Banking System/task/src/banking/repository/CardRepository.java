@@ -4,6 +4,7 @@ import banking.models.Card;
 import org.sqlite.SQLiteDataSource;
 
 import java.sql.*;
+import java.util.Optional;
 
 /**
  * This class provides the CRUD methods
@@ -14,8 +15,6 @@ public class CardRepository {
     private final SQLiteDataSource dataSource;
     private PreparedStatement statement;
     private String query;
-    private Card card;
-    private long balance;
 
     private CardRepository(String filename) {
         String url = "jdbc:sqlite:" + filename;
@@ -77,26 +76,27 @@ public class CardRepository {
 
     /**
      * Read card by given number from database
-     * @param number card number
+     * @param cardNumber card number
      * @return card entity
      */
-    public Card getCardByNumber(String number) {
+    public Optional<Card> findCardByNumber(String cardNumber) {
 
-        query = "SELECT * FROM card WHERE number= ?";
-
+        query = "SELECT * FROM card WHERE number = ?";
+        Card card = null;
         try (Connection connection = dataSource.getConnection()) {
             statement = connection.prepareStatement(query);
-            statement.setString(1, number);
+            statement.setString(1, cardNumber);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                card = new Card(resultSet.getString("number"), resultSet.getString("pin"), resultSet.getInt("balance"));
+                card = new Card(resultSet.getString("number"),
+                        resultSet.getString("pin"), resultSet.getInt("balance"));
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return card;
+        return card != null ? Optional.of(card) : Optional.empty();
     }
 
     /**
@@ -106,6 +106,8 @@ public class CardRepository {
      */
     public long getBalance(String number) {
         query = "SELECT balance FROM card WHERE number = ?";
+
+        long balance = 0L;
 
         try (Connection connection = dataSource.getConnection()) {
             statement = connection.prepareStatement(query);
@@ -126,7 +128,7 @@ public class CardRepository {
      * @param cardNumber Card number
      * @param income money to deposit to the account
      */
-    public void setBalance(String cardNumber, long income) {
+    public void updateBalanceByCardNumber(String cardNumber, long income) {
 
         query = "UPDATE card SET balance = (balance + ?) WHERE number = ?";
 
@@ -152,7 +154,7 @@ public class CardRepository {
      * @param targetCardNumber card number of target account
      * @param amount amount of money to transfer to @param targetCardNumber
      */
-    public void setBalance(String currentCardNumber, String targetCardNumber, long amount) {
+    public void updateBalanceByCurrentAndTargetCardNumber(String currentCardNumber, String targetCardNumber, long amount) {
 
         query = "UPDATE card SET balance = (balance + ?) WHERE number = ?";
 
@@ -185,7 +187,7 @@ public class CardRepository {
      * Delete account from the database
      * @param cardNumber card number
      */
-    public void deleteCard(String cardNumber) {
+    public void deleteCardByCardNumber(String cardNumber) {
         query = "DELETE FROM card WHERE number = ?";
 
         try (Connection connection = dataSource.getConnection()) {
@@ -195,5 +197,25 @@ public class CardRepository {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public Optional<Card> findCardByNumberAndPin(String cardNumber, String pin) {
+
+        query = "SELECT * FROM card WHERE number = ?";
+        Card card = null;
+        try (Connection connection = dataSource.getConnection()) {
+            statement = connection.prepareStatement(query);
+            statement.setString(1, cardNumber);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                card = new Card(resultSet.getString("number"),
+                        resultSet.getString("pin"), resultSet.getInt("balance"));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return card != null && pin.equals(card.getPin()) ? Optional.of(card) : Optional.empty();
     }
 }

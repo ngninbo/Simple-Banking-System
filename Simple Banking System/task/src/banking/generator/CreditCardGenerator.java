@@ -71,7 +71,7 @@ public class CreditCardGenerator {
      */
     private void validateCreditCardNumber() {
         int checkSum = 0;
-        while (!CardService.checkCreditCardNumber(this.creditCardNumber + checkSum)) {
+        while (!CardService.isValid(this.creditCardNumber + checkSum)) {
             checkSum += 1;
         }
         this.creditCardNumber = this.creditCardNumber + checkSum;
