@@ -1,6 +1,7 @@
 package banking.repository;
 
 import banking.models.Card;
+import banking.util.SqlQuery;
 import org.sqlite.SQLiteDataSource;
 
 import java.sql.*;
@@ -14,7 +15,6 @@ public class CardRepository {
 
     private final SQLiteDataSource dataSource;
     private PreparedStatement statement;
-    private String query;
 
     private CardRepository(String filename) {
         String url = "jdbc:sqlite:" + filename;
@@ -33,11 +33,9 @@ public class CardRepository {
      */
     public void saveCard(Card card) {
 
-        query = "INSERT INTO card (number, pin, balance) VALUES (?, ?, ?);";
-
         try (Connection connection = dataSource.getConnection()) {
             connection.setAutoCommit(false);
-            PreparedStatement statement = connection.prepareStatement(query);
+            PreparedStatement statement = connection.prepareStatement(SqlQuery.INSERT_INTO_CARD_NUMBER_PIN_BALANCE_VALUES);
             statement.setString(1, card.getCreditCardNumber());
             statement.setString(2, card.getPin());
             statement.setLong(3, card.getBalance());
@@ -56,18 +54,11 @@ public class CardRepository {
      */
     public void createTableCard() {
 
-        query = "BEGIN TRANSACTION;\n" +
-                "CREATE TABLE IF NOT EXISTS 'card'('id' INTEGER PRIMARY KEY, " +
-                "'number' TEXT, " +
-                "'pin' TEXT, " +
-                "'balance' INTEGER);\n" +
-                "COMMIT;";
-
         try (Connection connection = dataSource.getConnection()) {
 
             Statement statement = connection.createStatement();
 
-            statement.executeUpdate(query);
+            statement.executeUpdate(SqlQuery.CREATE_TABLE_CARD);
 
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();
@@ -81,10 +72,9 @@ public class CardRepository {
      */
     public Optional<Card> findCardByNumber(String cardNumber) {
 
-        query = "SELECT * FROM card WHERE number = ?";
         Card card = null;
         try (Connection connection = dataSource.getConnection()) {
-            statement = connection.prepareStatement(query);
+            statement = connection.prepareStatement(SqlQuery.CARD_WHERE_NUMBER);
             statement.setString(1, cardNumber);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
@@ -105,12 +95,11 @@ public class CardRepository {
      * @return account balance
      */
     public long readCardByNumberAndReturnBalance(String number) {
-        query = "SELECT balance FROM card WHERE number = ?";
 
         long balance = 0L;
 
         try (Connection connection = dataSource.getConnection()) {
-            statement = connection.prepareStatement(query);
+            statement = connection.prepareStatement(SqlQuery.SELECT_BALANCE_FROM_CARD_WHERE_NUMBER);
             statement.setString(1, number);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
@@ -130,14 +119,12 @@ public class CardRepository {
      */
     public void updateCardByNumber(String cardNumber, long income) {
 
-        query = "UPDATE card SET balance = (balance + ?) WHERE number = ?";
-
         try (Connection connection = dataSource.getConnection()){
 
             // Disable auto commit mode
             connection.setAutoCommit(false);
 
-            statement = connection.prepareStatement(query);
+            statement = connection.prepareStatement(SqlQuery.UPDATE_CARD_INCREASE_BALANCE_WHERE_NUMBER);
             statement.setLong(1, income);
             statement.setString(2, cardNumber);
 
@@ -156,21 +143,18 @@ public class CardRepository {
      */
     public void updateCardsByNumbers(String currentCardNumber, String targetCardNumber, long amount) {
 
-        query = "UPDATE card SET balance = (balance + ?) WHERE number = ?";
-
         try (Connection connection = dataSource.getConnection()) {
 
             // Disable auto commit mode
             connection.setAutoCommit(false);
             // connection.setSavepoint();
-            statement = connection.prepareStatement(query);
+            statement = connection.prepareStatement(SqlQuery.UPDATE_CARD_INCREASE_BALANCE_WHERE_NUMBER);
             statement.setLong(1, amount);
             statement.setString(2, targetCardNumber);
             statement.executeUpdate();
 
             // connection.setSavepoint();
-            query = "UPDATE card SET balance = (balance - ?) WHERE number = ?";
-            statement = connection.prepareStatement(query);
+            statement = connection.prepareStatement(SqlQuery.UPDATE_CARD_DECREASE_BALANCE_WHERE_NUMBER);
             statement.setLong(1, amount);
             statement.setString(2, currentCardNumber);
             statement.executeUpdate();
@@ -188,10 +172,9 @@ public class CardRepository {
      * @param cardNumber card number
      */
     public void deleteCardByCardNumber(String cardNumber) {
-        query = "DELETE FROM card WHERE number = ?";
 
         try (Connection connection = dataSource.getConnection()) {
-            statement = connection.prepareStatement(query);
+            statement = connection.prepareStatement(SqlQuery.DELETE_CARD_BY_NUMBER);
             statement.setString(1, cardNumber);
             statement.executeUpdate();
         } catch (SQLException e) {
