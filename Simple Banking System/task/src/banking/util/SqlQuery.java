@@ -1,5 +1,10 @@
 package banking.util;
 
+/**
+ * This class provides all SQL Queries needed by the repository
+ * @see banking.repository.CardRepository
+ * @author Beauclair Dongmo Ngnintedem Beauclair
+ */
 public class SqlQuery {
 
     public static final String CREATE_TABLE_CARD = "BEGIN TRANSACTION;\n" +

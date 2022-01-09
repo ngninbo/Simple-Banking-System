@@ -28,8 +28,8 @@ public class CardRepository {
     }
 
     /**
-     * Add new card in the database
-     * @param card Card entity
+     * Save card item
+     * @param card Card object
      */
     public void saveCard(Card card) {
 
@@ -50,7 +50,7 @@ public class CardRepository {
     }
 
     /**
-     * Create card table in the database if not exists
+     * Create table card if not exists
      */
     public void createTableCard() {
 
@@ -66,9 +66,9 @@ public class CardRepository {
     }
 
     /**
-     * Read card by given number from database
+     * Find card by given number
      * @param cardNumber card number
-     * @return card entity
+     * @return Optional card object
      */
     public Optional<Card> findCardByNumber(String cardNumber) {
 
@@ -90,11 +90,11 @@ public class CardRepository {
     }
 
     /**
-     * Read balance value of card by given number and pin
-     * @param number Card number
+     * Find card by given number and return balance value
+     * @param number credit card number
      * @return account balance
      */
-    public long readCardByNumberAndReturnBalance(String number) {
+    public long findCardByNumberAndReturnBalance(String number) {
 
         long balance = 0L;
 
@@ -113,9 +113,9 @@ public class CardRepository {
     }
 
     /**
-     * Add income to given account number
-     * @param cardNumber Card number
-     * @param income money to deposit to the account
+     * Update balance of card by given number increasingly
+     * @param cardNumber credit card number
+     * @param income amount of money to be added to current account balance
      */
     public void updateCardByNumber(String cardNumber, long income) {
 
@@ -137,9 +137,10 @@ public class CardRepository {
     }
 
     /**
+     * Update balance of card by given number increasingly in target and decreasingly in current account
      * @param currentCardNumber card number of current account
      * @param targetCardNumber card number of target account
-     * @param amount amount of money to transfer to @param targetCardNumber
+     * @param amount amount of money to be added/subtracted to/from target/current account balance
      */
     public void updateCardsByNumbers(String currentCardNumber, String targetCardNumber, long amount) {
 
@@ -168,7 +169,7 @@ public class CardRepository {
     }
 
     /**
-     * Delete account from the database
+     * Delete card by given number
      * @param cardNumber card number
      */
     public void deleteCardByCardNumber(String cardNumber) {
@@ -182,6 +183,12 @@ public class CardRepository {
         }
     }
 
+    /**
+     * Find card by given number and pin
+     * @param cardNumber card number
+     * @param pin PIN
+     * @return Optional Card object
+     */
     public Optional<Card> findCardByNumberAndPin(String cardNumber, String pin) {
 
         Optional<Card> card = findCardByNumber(cardNumber);

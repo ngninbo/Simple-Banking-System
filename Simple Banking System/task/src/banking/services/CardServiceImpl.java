@@ -26,7 +26,7 @@ public class CardServiceImpl implements CardService {
 
     @Override
     public long readBalanceByCardNumber(String cardNumber) {
-        return repository.readCardByNumberAndReturnBalance(cardNumber);
+        return repository.findCardByNumberAndReturnBalance(cardNumber);
     }
 
     @Override
