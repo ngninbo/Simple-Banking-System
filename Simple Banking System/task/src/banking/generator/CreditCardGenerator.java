@@ -1,11 +1,12 @@
 package banking.generator;
 
 import banking.models.Card;
-import banking.services.CardService;
+import banking.util.CreditCardNumberValidator;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.function.Predicate;
 
 /**
  * This class implements the card generation and validation logic.
@@ -18,6 +19,7 @@ public class CreditCardGenerator {
     private String creditCardNumber;
     private static final int BANK_IDENTIFICATION_NUMBER = 400000;
     private List<Integer> usedAccountIdentifiers;
+    private final Predicate<String> isValid = CreditCardNumberValidator::validate;
 
 
     private CreditCardGenerator() {
@@ -71,7 +73,7 @@ public class CreditCardGenerator {
      */
     private void validateCreditCardNumber() {
         int checkSum = 0;
-        while (!CardService.isValid(this.creditCardNumber + checkSum)) {
+        while (isValid.negate().test(this.creditCardNumber + checkSum)) {
             checkSum += 1;
         }
         this.creditCardNumber = this.creditCardNumber + checkSum;

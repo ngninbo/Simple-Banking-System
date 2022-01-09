@@ -1,15 +1,13 @@
 package banking;
 
 import banking.generator.CreditCardGenerator;
-import banking.services.AccountSessionService;
+import banking.services.*;
 import banking.models.Card;
 import banking.repository.CardRepository;
-import banking.services.CardService;
-import banking.services.CardServiceImpl;
-import banking.services.RequestUserTo;
 import banking.util.DisplayMessage;
 
 import java.util.Scanner;
+import java.util.function.BiFunction;
 
 /**
  * This class serves for account management.
@@ -22,10 +20,13 @@ public class Automate {
     private boolean exit = false;
     private int selectedOption;
     private final CardService cardService;
+    private final BiFunction<String, String, Boolean> isValidInputs;
+
 
     private Automate(String filename) {
         CardRepository repository = CardRepository.createCardRepository(filename);
         cardService = new CardServiceImpl(repository);
+        isValidInputs = cardService::isCardAvailableByCardNumberAndPin;
     }
 
     public static Automate createAutomate(String filename) {
@@ -92,7 +93,7 @@ public class Automate {
         String cardNumber = RequestUserTo.inputCardInformation(DisplayMessage.USER_CARD_NUMBER_INPUT_REQUEST_MSG);
         String pin = RequestUserTo.inputCardInformation(DisplayMessage.USER_PIN_INPUT_REQUEST_MSG);
 
-        if (isCardNumberValidAndCardByNumberAndPinExists(cardNumber, pin)) {
+        if (isValidInputs.apply(cardNumber, pin)) {
             boolean login = true;
             AccountSessionService account = AccountSessionService.accountSession(cardNumber, cardService);
             printLoginState(true);
@@ -126,10 +127,6 @@ public class Automate {
         } else {
             printWrongCardNumberOrPinErrorMessage();
         }
-    }
-
-    private boolean isCardNumberValidAndCardByNumberAndPinExists(String cardNumber, String pin) {
-        return CardService.isValid(cardNumber) && cardService.isCardByNumberAndPinPresent(cardNumber, pin);
     }
 
     /**

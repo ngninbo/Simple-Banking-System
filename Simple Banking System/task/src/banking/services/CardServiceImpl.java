@@ -2,12 +2,15 @@ package banking.services;
 
 import banking.models.Card;
 import banking.repository.CardRepository;
+import banking.util.CreditCardNumberValidator;
 
 import java.util.Optional;
+import java.util.function.Predicate;
 
 public class CardServiceImpl implements CardService {
 
     private final CardRepository repository;
+    private final Predicate<String> isValid = CreditCardNumberValidator::validate;
 
     public CardServiceImpl(CardRepository repository) {
         this.repository = repository;
@@ -46,7 +49,7 @@ public class CardServiceImpl implements CardService {
 
     @Override
     public boolean isCardAvailableByCardNumberAndPin(String cardNumber, String pin) {
-        return CardService.isValid(cardNumber) && isCardAvailableByCardNumberAndPin(cardNumber, pin);
+        return isValid.test(cardNumber) && isCardByNumberAndPinPresent(cardNumber, pin);
     }
 
     @Override
@@ -57,5 +60,10 @@ public class CardServiceImpl implements CardService {
     @Override
     public boolean isCardByNumberAndPinPresent(String cardNumber, String pin) {
         return repository.findCardByNumberAndPin(cardNumber, pin).isPresent();
+    }
+
+    @Override
+    public Predicate<String> cardNumberPresentChecker() {
+        return this::isCardByNumberPresent;
     }
 }

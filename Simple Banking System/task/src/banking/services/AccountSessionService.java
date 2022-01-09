@@ -1,5 +1,7 @@
 package banking.services;
 
+import java.util.function.Predicate;
+
 /**
  * This class is for performing transaction on an account after logging in.
  * @author Beauclair Dongmo Ngnintedem

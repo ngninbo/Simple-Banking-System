@@ -1,6 +1,7 @@
 package banking.services;
 
 import banking.util.DisplayMessage;
+import banking.util.CreditCardNumberValidator;
 
 import java.util.function.Predicate;
 
@@ -10,17 +11,15 @@ public class AccountServiceImpl implements AccountService {
     private final CardService cardService;
 
     private final Predicate<String> isNotPresent;
-    private final Predicate<String> isValid = CardService::isValid;
+    private final Predicate<String> isValid = CreditCardNumberValidator::validate;
 
     public AccountServiceImpl(String cardNumber, CardService cardService) {
         this.cardNumber = cardNumber;
         this.cardService = cardService;
-        isNotPresent = cardNumberPresentChecker().negate();
+
+        isNotPresent = cardService.cardNumberPresentChecker().negate();
     }
 
-    private Predicate<String> cardNumberPresentChecker() {
-        return cardService::isCardByNumberPresent;
-    }
 
     @Override
     public void addIncome() {

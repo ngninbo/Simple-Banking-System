@@ -186,13 +186,18 @@ public class CardRepository {
     /**
      * Find card by given number and pin
      * @param cardNumber card number
-     * @param pin PIN
+     * @param actualPin PIN entered by user
      * @return Optional Card object
      */
-    public Optional<Card> findCardByNumberAndPin(String cardNumber, String pin) {
+    public Optional<Card> findCardByNumberAndPin(String cardNumber, String actualPin) {
 
         Optional<Card> card = findCardByNumber(cardNumber);
+        String expectedPin = card.orElseThrow().getPin();
 
-        return pin.equals(card.orElseThrow().getPin()) ? card : Optional.empty();
+        return isPinValid(actualPin, expectedPin) ? card : Optional.empty();
+    }
+
+    private boolean isPinValid(String actualPin, String exceptedPin) {
+        return actualPin.equals(exceptedPin);
     }
 }
