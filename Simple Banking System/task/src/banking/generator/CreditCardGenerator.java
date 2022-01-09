@@ -3,8 +3,6 @@ package banking.generator;
 import banking.models.Card;
 import banking.util.CreditCardNumberValidator;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Predicate;
 
@@ -14,16 +12,13 @@ import java.util.function.Predicate;
  */
 public class CreditCardGenerator {
 
-    private int accountIdentifier;
+    private final String creditCardNumber;
     private final String pin;
-    private String creditCardNumber;
     private static final int BANK_IDENTIFICATION_NUMBER = 400000;
-    private List<Integer> usedAccountIdentifiers;
     private final Predicate<String> isValid = CreditCardNumberValidator::validate;
 
-
     private CreditCardGenerator() {
-        generateValidCreditCardNumber();
+        this.creditCardNumber = generateValidCreditCardNumber();
         this.pin = generatePin();
     }
 
@@ -45,37 +40,28 @@ public class CreditCardGenerator {
     /**
      * Generate account identifier
      */
-    private void generateAccountIdentifier() {
-
-        accountIdentifier = (int) ThreadLocalRandom.current().nextLong(100000000, 999999999);
-
-        if (!usedAccountIdentifiers.contains(accountIdentifier)) {
-            usedAccountIdentifiers.add(accountIdentifier);
-        } else {
-            generateAccountIdentifier();
-        }
+    private int generateAccountIdentifier() {
+        return (int) ThreadLocalRandom.current().nextLong(100000000, 999999999);
     }
 
     /**
      * Generate card number and validate it
      */
-    private void generateValidCreditCardNumber() {
-        this.usedAccountIdentifiers = new ArrayList<>();
+    private String generateValidCreditCardNumber() {
         StringBuilder tmpCardNumber = new StringBuilder();
-        generateAccountIdentifier();
+        int accountIdentifier = generateAccountIdentifier();
         tmpCardNumber.append(BANK_IDENTIFICATION_NUMBER).append(accountIdentifier);
-        this.creditCardNumber = tmpCardNumber.toString();
-        validateCreditCardNumber();
+        return validateCreditCardNumber(tmpCardNumber.toString());
     }
 
     /**
      * Validate generated card number while finding the check sum
      */
-    private void validateCreditCardNumber() {
+    private String validateCreditCardNumber(String number) {
         int checkSum = 0;
-        while (isValid.negate().test(this.creditCardNumber + checkSum)) {
+        while (isValid.negate().test(number + checkSum)) {
             checkSum += 1;
         }
-        this.creditCardNumber = this.creditCardNumber + checkSum;
+        return number + checkSum;
     }
 }
