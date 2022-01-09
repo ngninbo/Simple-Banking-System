@@ -23,7 +23,7 @@ public class CardRepository {
         createTableCard();
     }
 
-    public static CardRepository createCardRepository(String filename) {
+    public static CardRepository init(String filename) {
         return new CardRepository(filename);
     }
 
@@ -78,7 +78,7 @@ public class CardRepository {
             statement.setString(1, cardNumber);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                card = new Card(resultSet.getString("number"),
+                card = Card.createCard(resultSet.getString("number"),
                         resultSet.getString("pin"), resultSet.getInt("balance"));
             }
 

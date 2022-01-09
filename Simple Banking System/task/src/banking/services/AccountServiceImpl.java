@@ -16,8 +16,7 @@ public class AccountServiceImpl implements AccountService {
     public AccountServiceImpl(String cardNumber, CardService cardService) {
         this.cardNumber = cardNumber;
         this.cardService = cardService;
-
-        isNotPresent = cardService.cardNumberPresentChecker().negate();
+        this.isNotPresent = cardService.cardNumberPresentChecker().negate();
     }
 
 

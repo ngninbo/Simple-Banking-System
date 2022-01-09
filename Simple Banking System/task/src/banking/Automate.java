@@ -24,7 +24,7 @@ public class Automate {
 
 
     private Automate(String filename) {
-        CardRepository repository = CardRepository.createCardRepository(filename);
+        CardRepository repository = CardRepository.init(filename);
         cardService = new CardServiceImpl(repository);
         isValidInputs = cardService::isCardAvailableByCardNumberAndPin;
     }
@@ -78,7 +78,7 @@ public class Automate {
      * Create card and print card number and PIN when creation succeed
      */
     private void createCard() {
-        CreditCardGenerator generator = CreditCardGenerator.createCreditCardGenerator();
+        CreditCardGenerator generator = CreditCardGenerator.init();
         Card card = generator.getCard();
         cardService.saveCard(card);
 

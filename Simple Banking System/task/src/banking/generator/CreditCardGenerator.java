@@ -6,6 +6,7 @@ import banking.util.CreditCardNumberValidator;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Predicate;
 
+
 /**
  * This class implements the card generation and validation logic.
  * @author Beauclair Dongmo Ngnintedem
@@ -22,7 +23,7 @@ public class CreditCardGenerator {
         this.pin = generatePin();
     }
 
-    public static CreditCardGenerator createCreditCardGenerator() {
+    public static CreditCardGenerator init() {
         return new CreditCardGenerator();
     }
 

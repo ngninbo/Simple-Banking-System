@@ -11,7 +11,7 @@ public class Card {
     private final long balance;
 
 
-    public Card(String creditCardNumber, String pin, long balance) {
+    private Card(String creditCardNumber, String pin, long balance) {
         this.creditCardNumber = creditCardNumber;
         this.pin = pin;
         this.balance = balance;
@@ -23,6 +23,10 @@ public class Card {
 
     public static Card createCard(String creditCardNumber, String pin) {
         return new Card(creditCardNumber, pin);
+    }
+
+    public static Card createCard(String creditCardNumber, String pin, long balance) {
+        return new Card(creditCardNumber, pin, balance);
     }
 
     public String getCreditCardNumber() {
