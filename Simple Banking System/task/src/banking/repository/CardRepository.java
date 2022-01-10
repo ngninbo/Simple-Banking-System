@@ -124,7 +124,7 @@ public class CardRepository {
             // Disable auto commit mode
             connection.setAutoCommit(false);
 
-            statement = connection.prepareStatement(UPDATE_CARD_INCREASE_BALANCE_WHERE_NUMBER);
+            statement = connection.prepareStatement(UPDATE_CARD_INCREASING_BALANCE_WHERE_NUMBER);
             statement.setLong(1, income);
             statement.setString(2, cardNumber);
 
@@ -149,13 +149,13 @@ public class CardRepository {
             // Disable auto commit mode
             connection.setAutoCommit(false);
             // connection.setSavepoint();
-            statement = connection.prepareStatement(UPDATE_CARD_INCREASE_BALANCE_WHERE_NUMBER);
+            statement = connection.prepareStatement(UPDATE_CARD_INCREASING_BALANCE_WHERE_NUMBER);
             statement.setLong(1, amount);
             statement.setString(2, targetCardNumber);
             statement.executeUpdate();
 
             // connection.setSavepoint();
-            statement = connection.prepareStatement(UPDATE_CARD_DECREASE_BALANCE_WHERE_NUMBER);
+            statement = connection.prepareStatement(UPDATE_CARD_DECREASING_BALANCE_WHERE_NUMBER);
             statement.setLong(1, amount);
             statement.setString(2, currentCardNumber);
             statement.executeUpdate();
