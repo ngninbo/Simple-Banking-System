@@ -20,16 +20,16 @@ public class Automate {
     private boolean exit = false;
     private int selectedOption;
     private final CardService cardService;
-    private final BiFunction<String, String, Boolean> isValidInputs;
+    private final BiFunction<String, String, Boolean> cardInfoValidation;
 
 
     private Automate(String filename) {
         CardRepository repository = CardRepository.init(filename);
         cardService = new CardServiceImpl(repository);
-        isValidInputs = cardService::isCardAvailableByCardNumberAndPin;
+        cardInfoValidation = cardService::isCardAvailableByCardNumberAndPin;
     }
 
-    public static Automate createAutomate(String filename) {
+    public static Automate init(String filename) {
         return new Automate(filename);
     }
 
@@ -93,7 +93,9 @@ public class Automate {
         String cardNumber = RequestUserTo.inputCardInformation(DisplayMessage.USER_CARD_NUMBER_INPUT_REQUEST_MSG);
         String pin = RequestUserTo.inputCardInformation(DisplayMessage.USER_PIN_INPUT_REQUEST_MSG);
 
-        if (isValidInputs.apply(cardNumber, pin)) {
+        if (!cardInfoValidation.apply(cardNumber, pin)) {
+            printWrongCardNumberOrPinErrorMessage();
+        } else {
             boolean login = true;
             AccountSessionService account = AccountSessionService.accountSession(cardNumber, cardService);
             printLoginState(true);
@@ -124,8 +126,6 @@ public class Automate {
                         break;
                 }
             }
-        } else {
-            printWrongCardNumberOrPinErrorMessage();
         }
     }
 

@@ -41,7 +41,7 @@ public class CreditCardGenerator {
     /**
      * Generate account identifier
      */
-    private int generateAccountIdentifier() {
+    private static int generateAccountIdentifier() {
         return (int) ThreadLocalRandom.current().nextLong(100000000, 999999999);
     }
 
