@@ -15,21 +15,23 @@ import java.util.function.Predicate;
  */
 public class CreditCardGenerator {
 
-    private final String creditCardNumber;
-    private final String pin;
+    private String creditCardNumber;
+    private String pin;
     private final Predicate<String> isValid = CreditCardNumberValidator::validate;
 
     private CreditCardGenerator() {
-        this.creditCardNumber = generateValidCreditCardNumber();
-        this.pin = generatePin();
     }
 
     public static CreditCardGenerator init() {
         return new CreditCardGenerator();
     }
 
-    public Card getCard() {
+    private Card getCard() {
         return Card.createCard(creditCardNumber, pin);
+    }
+
+    public Card build() {
+        return getCard();
     }
 
     /**
@@ -37,6 +39,19 @@ public class CreditCardGenerator {
      */
     public static String generatePin() {
         return String.format(PIN_FORMATTER, (int) ThreadLocalRandom.current().nextLong(MIN_PIN, MAX_PIN));
+    }
+
+    /**
+     * Generate a PIN number
+     */
+    public CreditCardGenerator createPin() {
+        this.pin = generatePin();
+        return this;
+    }
+
+    public CreditCardGenerator createCardNumber() {
+        this.creditCardNumber = generateValidCreditCardNumber();
+        return this;
     }
 
     /**

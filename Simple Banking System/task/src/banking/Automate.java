@@ -78,8 +78,12 @@ public class Automate {
      * Create card and print card number and PIN when creation succeed
      */
     private void createCard() {
-        CreditCardGenerator generator = CreditCardGenerator.init();
-        Card card = generator.getCard();
+
+        Card card = CreditCardGenerator.init()
+                .createPin()
+                .createCardNumber()
+                .build();
+
         cardService.saveCard(card);
 
         System.out.printf(CARD_INFORMATION_AFTER_CREATION_TEXT,
