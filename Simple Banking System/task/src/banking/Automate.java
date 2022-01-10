@@ -4,7 +4,7 @@ import banking.generator.CreditCardGenerator;
 import banking.services.*;
 import banking.models.Card;
 import banking.repository.CardRepository;
-import banking.util.DisplayMessage;
+import banking.util.TextOutput;
 
 import java.util.Scanner;
 import java.util.function.BiFunction;
@@ -64,10 +64,10 @@ public class Automate {
 
         switch (menu) {
             case START:
-                selectedOption = displayOptions(DisplayMessage.START_MENU_ITEMS);
+                selectedOption = displayOptions(TextOutput.START_MENU_ITEMS);
                 break;
             case LOGIN:
-                selectedOption = displayOptions(DisplayMessage.LOGIN_SESSION_MENU_ITEMS);
+                selectedOption = displayOptions(TextOutput.LOGIN_SESSION_MENU_ITEMS);
                 break;
         }
 
@@ -82,7 +82,7 @@ public class Automate {
         Card card = generator.getCard();
         cardService.saveCard(card);
 
-        System.out.printf(DisplayMessage.CARD_INFORMATION_AFTER_CREATION_TEXT,
+        System.out.printf(TextOutput.CARD_INFORMATION_AFTER_CREATION_TEXT,
                 card.getCreditCardNumber(), card.getPin());
     }
 
@@ -90,8 +90,8 @@ public class Automate {
      * Login into account to perform transactions
      */
     private void loginToAccount() {
-        String cardNumber = RequestUserTo.inputCardInformation(DisplayMessage.USER_CARD_NUMBER_INPUT_REQUEST_MSG);
-        String pin = RequestUserTo.inputCardInformation(DisplayMessage.USER_PIN_INPUT_REQUEST_MSG);
+        String cardNumber = RequestUserTo.inputCardInformation(TextOutput.USER_CARD_NUMBER_INPUT_REQUEST_MSG);
+        String pin = RequestUserTo.inputCardInformation(TextOutput.USER_PIN_INPUT_REQUEST_MSG);
 
         if (!cardInfoValidation.apply(cardNumber, pin)) {
             printWrongCardNumberOrPinErrorMessage();
@@ -133,7 +133,7 @@ public class Automate {
      * Say 'Bye' and end the program
      */
     private void printByeMessage() {
-        System.out.println(DisplayMessage.BYE_MSG);
+        System.out.println(TextOutput.BYE_MSG);
         System.exit(0);
     }
 
@@ -141,7 +141,7 @@ public class Automate {
      * Informed user that the input card number or PIN is wrong when validation failed
      */
     private void printWrongCardNumberOrPinErrorMessage() {
-        System.out.println(DisplayMessage.WRONG_CARD_NUMBER_OR_PIN_ERROR_MSG);
+        System.out.println(TextOutput.WRONG_CARD_NUMBER_OR_PIN_ERROR_MSG);
     }
 
     /**
@@ -165,7 +165,7 @@ public class Automate {
      */
     private void printLoginState(boolean loginState) {
         String state;
-        state = loginState ? DisplayMessage.LOG_IN_SUCCEED_MSG : DisplayMessage.LOG_OUT_SUCCEED_MSG;
+        state = loginState ? TextOutput.LOG_IN_SUCCEED_MSG : TextOutput.LOG_OUT_SUCCEED_MSG;
         System.out.println(state);
     }
 }
