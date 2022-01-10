@@ -192,7 +192,12 @@ public class CardRepository {
     public Optional<Card> findCardByNumberAndPin(String cardNumber, String actualPin) {
 
         Optional<Card> card = findCardByNumber(cardNumber);
-        String expectedPin = card.orElseThrow().getPin();
+
+        if (card.isEmpty()) {
+            return Optional.empty();
+        }
+
+        String expectedPin = card.get().getPin();
 
         return isPinValid(actualPin, expectedPin) ? card : Optional.empty();
     }
