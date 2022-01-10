@@ -6,6 +6,7 @@ import banking.models.Card;
 import banking.repository.CardRepository;
 import static banking.util.TextOutput.*;
 
+import java.util.List;
 import java.util.Scanner;
 import java.util.function.BiFunction;
 
@@ -64,10 +65,10 @@ public class Automate {
 
         switch (menu) {
             case START:
-                selectedOption = displayOptions(START_MENU_ITEMS);
+                selectedOption = displayOptions(START_MENU_OPTIONS);
                 break;
             case LOGIN:
-                selectedOption = displayOptions(LOGIN_SESSION_MENU_ITEMS);
+                selectedOption = displayOptions(LOGIN_MENU_OPTIONS);
                 break;
         }
 
@@ -149,19 +150,21 @@ public class Automate {
     }
 
     /**
-     * @param options Options for choice
-     * @return user selected option
+     * @param options List of options
+     * @return selected option
      */
-    private int displayOptions(StringBuilder options) {
+    private int displayOptions(List<String> options) {
         // Print menu
         int selectedOption;
-        System.out.println(options);
+        options.forEach(System.out::println);
         // Prompt user to select an option
         Scanner scanner = new Scanner(System.in);
         selectedOption = scanner.nextInt();
 
         return selectedOption;
     }
+
+
 
     /**
      * Print message depending on the login state

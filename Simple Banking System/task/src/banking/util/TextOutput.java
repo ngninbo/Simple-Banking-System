@@ -1,5 +1,7 @@
 package banking.util;
 
+import java.util.List;
+
 public class TextOutput {
 
     public static final String CARD_NUMBER_ERROR_MSG = "Probably you made a mistake in the card number. Please try again!\n";
@@ -13,14 +15,10 @@ public class TextOutput {
     public static final String INCOME_INPUT_REQUEST_MSG = "\nEnter income:";
     public static final String INCOME_ADDED_TEXT = "Income was added!\n";
     public static final String TRANSFER_TEXT = "\nTransfer";
-    public static final StringBuilder START_MENU_ITEMS = new StringBuilder().append("1. Create an account\n")
-            .append("2. Log into account\n").append("0. Exit");
-    public static final StringBuilder LOGIN_SESSION_MENU_ITEMS = new StringBuilder().append("1. Balance\n")
-            .append("2. Add income\n")
-            .append("3. Do transfer\n")
-            .append("4. Close account\n")
-            .append("5. Log out\n")
-            .append("0. Exit");
+    public static final String EXIT_OPTION = "0. Exit";
+    public static List<String> START_MENU_OPTIONS = List.of("1. Create an account", "2. Log into account", EXIT_OPTION);
+    public static List<String> LOGIN_MENU_OPTIONS = List.of("1. Balance", "2. Add income",
+            "3. Do transfer", "4. Close account", "5. Log out", EXIT_OPTION);
 
     public static final String USER_CARD_NUMBER_INPUT_REQUEST_MSG = "\nEnter your card number:";
     public static final String USER_PIN_INPUT_REQUEST_MSG = "Enter your PIN:";
