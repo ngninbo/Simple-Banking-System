@@ -1,6 +1,6 @@
 package banking.services;
 
-import banking.util.TextOutput;
+import static banking.util.TextOutput.*;
 
 import java.util.Scanner;
 
@@ -22,7 +22,7 @@ public interface RequestUserTo {
      * @return Target card number to which money has to be transfer
      */
     static String inputTargetCardNumber() {
-        return inputCardInformation(TextOutput.TARGET_CARD_NUMBER_INPUT_REQUEST_MSG);
+        return inputCardInformation(TARGET_CARD_NUMBER_INPUT_REQUEST_MSG);
     }
 
     /**

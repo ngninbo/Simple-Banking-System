@@ -193,13 +193,8 @@ public class CardRepository {
 
         Optional<Card> card = findCardByNumber(cardNumber);
 
-        if (card.isEmpty()) {
-            return Optional.empty();
-        }
-
-        String expectedPin = card.get().getPin();
-
-        return isPinValid(actualPin, expectedPin) ? card : Optional.empty();
+        return card.isEmpty() ? Optional.empty() :
+                (isPinValid(actualPin, card.get().getPin()) ? card : Optional.empty());
     }
 
     private boolean isPinValid(String actualPin, String exceptedPin) {
