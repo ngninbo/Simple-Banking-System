@@ -1,6 +1,6 @@
 package banking.util;
 
-public class DisplayMessage {
+public class TextOutput {
 
     public static final String CARD_NUMBER_ERROR_MSG = "Probably you made a mistake in the card number. Please try again!\n";
     public static final String SAME_ACCOUNT_ERROR_MSG = "You can't transfer money to the same account!\n";
