@@ -42,7 +42,7 @@ public class CreditCardGenerator {
     /**
      * Generate account identifier
      */
-    private static int generateAccountIdentifier() {
+    public static int generateAccountIdentifier() {
 
         return (int) ThreadLocalRandom.current().nextLong(MIN_ACCOUNT_IDENTIFIER, MAX_ACCOUNT_IDENTIFIER);
     }
@@ -50,7 +50,7 @@ public class CreditCardGenerator {
     /**
      * Generate card number and validate it
      */
-    private String generateValidCreditCardNumber() {
+    public String generateValidCreditCardNumber() {
         StringBuilder tmpCardNumber = new StringBuilder();
         int accountIdentifier = generateAccountIdentifier();
         tmpCardNumber.append(BANK_IDENTIFICATION_NUMBER).append(accountIdentifier);
@@ -60,7 +60,7 @@ public class CreditCardGenerator {
     /**
      * Validate generated card number while finding the check sum
      */
-    private String validateCreditCardNumber(String number) {
+    public String validateCreditCardNumber(String number) {
         int checkSum = 0;
         while (isValid.negate().test(number + checkSum)) {
             checkSum += 1;
