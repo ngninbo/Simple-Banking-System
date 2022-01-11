@@ -4,11 +4,11 @@ import java.util.Scanner;
 
 public class ReadData {
 
+    public static final String PATH_TO_FILE = "/Users/bdongmo-ngnintedem/IdeaProjects/Simple Banking System/dataset_91033.txt";
+
     public static void main(String[] args) {
 
-        String pathToFile = "/Users/bdongmo-ngnintedem/IdeaProjects/Simple Banking System/dataset_91033.txt";
-
-        File file = new File(pathToFile);
+        File file = new File(PATH_TO_FILE);
         int sum = 0;
         try (Scanner scanner = new Scanner(file)) {
             while (scanner.hasNext()) {
@@ -16,8 +16,8 @@ public class ReadData {
                 sum += number;
             }
         } catch (FileNotFoundException e) {
-            System.out.println("No such file found: " + pathToFile);
+            System.out.printf("No such file found: %s", PATH_TO_FILE);
         }
-        System.out.println("Sum: " + sum);
+        System.out.printf("Sum: %d", sum);
     }
 }

@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.Scanner;
 
 class Main {
@@ -15,13 +16,10 @@ class Main {
             i++;
         }
 
-        minValue = intValues[0];
-
-        for (int j = 1; j < arraySize; j++) {
-            if (intValues[j] < minValue) {
-                minValue = intValues[j];
-            }
-        }
+        minValue = Arrays.stream(intValues)
+                .sorted()
+                .findFirst()
+                .orElse(0);
 
         System.out.println(minValue);
     }
