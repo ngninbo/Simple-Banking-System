@@ -1187,9 +1187,6 @@ files:
 - name: src/banking/services/RequestUserTo.java
   visible: true
   learner_created: true
-- name: src/banking/util/SqlQuery.java
-  visible: true
-  learner_created: true
 - name: src/banking/util/CreditCardNumberValidator.java
   visible: true
   learner_created: true
@@ -1197,6 +1194,9 @@ files:
   visible: true
   learner_created: true
 - name: src/banking/util/CardGeneratorConstants.java
+  visible: true
+  learner_created: true
+- name: src/banking/util/SqlStatement.java
   visible: true
   learner_created: true
 feedback_link: https://hyperskill.org/learn/step/8428#comment

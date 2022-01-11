@@ -1,7 +1,7 @@
 package banking.repository;
 
 import banking.models.Card;
-import static banking.util.SqlQuery.*;
+import static banking.util.SqlStatement.*;
 import org.sqlite.SQLiteDataSource;
 
 import java.sql.*;

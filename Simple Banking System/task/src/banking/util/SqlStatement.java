@@ -1,11 +1,11 @@
 package banking.util;
 
 /**
- * This class provides all SQL Queries needed by the repository
+ * This class provides all SQL Statements needed by the repository
  * @see banking.repository.CardRepository
  * @author Beauclair Dongmo Ngnintedem Beauclair
  */
-public class SqlQuery {
+public class SqlStatement {
 
     public static final String CREATE_TABLE_CARD = "BEGIN TRANSACTION;\n" +
             "CREATE TABLE IF NOT EXISTS 'card'('id' INTEGER PRIMARY KEY, " +
