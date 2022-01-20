@@ -3,14 +3,15 @@ package banking.generator;
 import banking.models.Card;
 import banking.util.CreditCardNumberValidator;
 
-import static banking.util.CardGeneratorConstants.*;
-
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Predicate;
+
+import static banking.util.CardGeneratorConstants.*;
 
 
 /**
  * This class implements the card generation and validation logic.
+ *
  * @author Beauclair Dongmo Ngnintedem
  */
 public class CreditCardGenerator {

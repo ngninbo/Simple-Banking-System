@@ -1,14 +1,16 @@
 package banking.repository;
 
 import banking.models.Card;
-import static banking.util.SqlStatement.*;
 import org.sqlite.SQLiteDataSource;
 
 import java.sql.*;
 import java.util.Optional;
 
+import static banking.util.SqlStatement.*;
+
 /**
  * This class provides the CRUD methods
+ *
  * @author Beauclair Dongmo Ngnintedem
  */
 public class CardRepository {
@@ -29,6 +31,7 @@ public class CardRepository {
 
     /**
      * Save card item
+     *
      * @param card Card object
      */
     public void saveCard(Card card) {
@@ -67,6 +70,7 @@ public class CardRepository {
 
     /**
      * Find card by given number
+     *
      * @param cardNumber card number
      * @return Optional card object
      */
@@ -91,6 +95,7 @@ public class CardRepository {
 
     /**
      * Find card by given number and return balance value
+     *
      * @param number credit card number
      * @return account balance
      */
@@ -114,12 +119,13 @@ public class CardRepository {
 
     /**
      * Update balance of card by given number increasingly
+     *
      * @param cardNumber credit card number
-     * @param income amount of money to be added to current account balance
+     * @param income     amount of money to be added to current account balance
      */
     public void updateCardByNumber(String cardNumber, long income) {
 
-        try (Connection connection = dataSource.getConnection()){
+        try (Connection connection = dataSource.getConnection()) {
 
             // Disable auto commit mode
             connection.setAutoCommit(false);
@@ -138,9 +144,10 @@ public class CardRepository {
 
     /**
      * Update balance of card by given number increasingly in target and decreasingly in current account
+     *
      * @param currentCardNumber card number of current account
-     * @param targetCardNumber card number of target account
-     * @param amount amount of money to be added/subtracted to/from target/current account balance
+     * @param targetCardNumber  card number of target account
+     * @param amount            amount of money to be added/subtracted to/from target/current account balance
      */
     public void updateCardsByNumbers(String currentCardNumber, String targetCardNumber, long amount) {
 
@@ -170,6 +177,7 @@ public class CardRepository {
 
     /**
      * Delete card by given number
+     *
      * @param cardNumber card number
      */
     public void deleteCardByCardNumber(String cardNumber) {
@@ -185,8 +193,9 @@ public class CardRepository {
 
     /**
      * Find card by given number and pin
+     *
      * @param cardNumber card number
-     * @param actualPin PIN entered by user
+     * @param actualPin  PIN entered by user
      * @return Optional Card object
      */
     public Optional<Card> findCardByNumberAndPin(String cardNumber, String actualPin) {

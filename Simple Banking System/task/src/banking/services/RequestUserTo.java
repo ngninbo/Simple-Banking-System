@@ -1,8 +1,8 @@
 package banking.services;
 
-import static banking.util.TextOutput.*;
-
 import java.util.Scanner;
+
+import static banking.util.TextOutput.TARGET_CARD_NUMBER_INPUT_REQUEST_MSG;
 
 public interface RequestUserTo {
 
@@ -19,6 +19,7 @@ public interface RequestUserTo {
 
     /**
      * Prompt the user to enter the card number to which money has to be transfer
+     *
      * @return Target card number to which money has to be transfer
      */
     static String inputTargetCardNumber() {
@@ -27,6 +28,7 @@ public interface RequestUserTo {
 
     /**
      * Prompt users to enter their card number or PIN
+     *
      * @param command String message
      * @return Card number or PIN
      */

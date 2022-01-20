@@ -1,19 +1,24 @@
 package banking;
 
 import banking.generator.CreditCardGenerator;
-import banking.services.*;
 import banking.models.Card;
 import banking.repository.CardRepository;
-import static banking.util.TextOutput.*;
+import banking.services.AccountSessionService;
+import banking.services.CardService;
+import banking.services.CardServiceImpl;
+import banking.services.RequestUserTo;
 
 import java.util.List;
 import java.util.Scanner;
 import java.util.function.BiFunction;
 
+import static banking.util.TextOutput.*;
+
 /**
  * This class serves for account management.
  * It provided several methods for creating an account, logging into an account and
  * for performing some transaction on an account
+ *
  * @author Beauclair Dongmo Ngnintedem
  */
 public class Automate {
@@ -58,6 +63,7 @@ public class Automate {
 
     /**
      * Display action the user can perform
+     *
      * @param menu Item from enumerator
      * @return User selection
      */
@@ -165,9 +171,9 @@ public class Automate {
     }
 
 
-
     /**
      * Print message depending on the login state
+     *
      * @param loginState login state
      */
     private void printLoginState(boolean loginState) {

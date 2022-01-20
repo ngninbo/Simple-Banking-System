@@ -4,6 +4,7 @@ public interface CreditCardNumberValidator {
 
     /**
      * Validate the given card number with the Luhn algorithm
+     *
      * @param creditCardNumber Credit card number
      * @return isValid Whether the given number passed the Luhn algorithm
      */

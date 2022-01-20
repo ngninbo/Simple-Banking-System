@@ -1,9 +1,10 @@
 package banking.services;
 
-import static banking.util.TextOutput.*;
 import banking.util.CreditCardNumberValidator;
 
 import java.util.function.Predicate;
+
+import static banking.util.TextOutput.*;
 
 public class AccountServiceImpl implements AccountService {
 
