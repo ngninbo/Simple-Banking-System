@@ -11,6 +11,7 @@ import banking.services.RequestUserTo;
 import java.util.List;
 import java.util.Scanner;
 import java.util.function.BiFunction;
+import java.util.stream.IntStream;
 
 import static banking.util.TextOutput.*;
 
@@ -162,7 +163,10 @@ public class Automate {
     private int displayOptions(List<String> options) {
         // Print menu
         int selectedOption;
-        options.forEach(System.out::println);
+        IntStream.range(0, options.size())
+                .forEach(i -> System.out.printf("%d. %s\n",
+                        EXIT_OPTION.equals(options.get(i)) ? 0 : i + 1, options.get(i)));
+
         // Prompt user to select an option
         Scanner scanner = new Scanner(System.in);
         selectedOption = scanner.nextInt();
