@@ -1,11 +1,7 @@
 package banking;
 
-import banking.generator.CreditCardGenerator;
-import banking.models.Card;
-import banking.repository.CardRepository;
 import banking.services.AccountSessionService;
 import banking.services.CardService;
-import banking.services.CardServiceImpl;
 import banking.services.RequestUserTo;
 
 import java.util.List;
@@ -30,14 +26,9 @@ public class Automate {
     private final BiFunction<String, String, Boolean> cardInfoValidation;
 
 
-    private Automate(String filename) {
-        CardRepository repository = CardRepository.init(filename);
-        cardService = new CardServiceImpl(repository);
+    public Automate(CardService cardService) {
+        this.cardService = cardService;
         cardInfoValidation = cardService::isCardAvailableByCardNumberAndPin;
-    }
-
-    public static Automate init(String filename) {
-        return new Automate(filename);
     }
 
     /**
@@ -49,7 +40,7 @@ public class Automate {
             int choice = displaySelectionMenu(Menu.START);
             switch (choice) {
                 case 1:
-                    createCard();
+                    cardService.createCard();
                     break;
                 case 2:
                     loginToAccount();
@@ -80,22 +71,6 @@ public class Automate {
         }
 
         return selectedOption;
-    }
-
-    /**
-     * Create card and print card number and PIN when creation succeed
-     */
-    private void createCard() {
-
-        Card card = CreditCardGenerator.init()
-                .createPin()
-                .createCardNumber()
-                .build();
-
-        cardService.saveCard(card);
-
-        System.out.printf(CARD_INFORMATION_AFTER_CREATION_TEXT,
-                card.getCreditCardNumber(), card.getPin());
     }
 
     /**

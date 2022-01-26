@@ -27,4 +27,5 @@ public interface CardService {
 
     Predicate<String> cardNumberPresentChecker();
 
+    void createCard();
 }

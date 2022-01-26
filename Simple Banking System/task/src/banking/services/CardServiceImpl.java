@@ -1,11 +1,14 @@
 package banking.services;
 
+import banking.generator.CreditCardGenerator;
 import banking.models.Card;
 import banking.repository.CardRepository;
 import banking.util.CreditCardNumberValidator;
 
 import java.util.Optional;
 import java.util.function.Predicate;
+
+import static banking.util.TextOutput.CARD_INFORMATION_AFTER_CREATION_TEXT;
 
 public class CardServiceImpl implements CardService {
 
@@ -65,5 +68,18 @@ public class CardServiceImpl implements CardService {
     @Override
     public Predicate<String> cardNumberPresentChecker() {
         return this::isCardByNumberPresent;
+    }
+
+    @Override
+    public void createCard() {
+        Card card = CreditCardGenerator.init()
+                .createPin()
+                .createCardNumber()
+                .build();
+
+        this.saveCard(card);
+
+        System.out.printf(CARD_INFORMATION_AFTER_CREATION_TEXT,
+                card.getCreditCardNumber(), card.getPin());
     }
 }

@@ -27,21 +27,6 @@ public class CreditCardGenerator {
         return new CreditCardGenerator();
     }
 
-    private Card getCard() {
-        return Card.createCard(creditCardNumber, pin);
-    }
-
-    public Card build() {
-        return getCard();
-    }
-
-    /**
-     * Generate a PIN number
-     */
-    public static String generatePin() {
-        return String.format(PIN_FORMATTER, (int) ThreadLocalRandom.current().nextLong(MIN_PIN, MAX_PIN));
-    }
-
     /**
      * Generate a PIN number
      */
@@ -54,6 +39,18 @@ public class CreditCardGenerator {
         this.creditCardNumber = generateValidCreditCardNumber();
         return this;
     }
+
+    public Card build() {
+        return Card.createCard(creditCardNumber, pin);
+    }
+
+    /**
+     * Generate a PIN number
+     */
+    public static String generatePin() {
+        return String.format(PIN_FORMATTER, (int) ThreadLocalRandom.current().nextLong(MIN_PIN, MAX_PIN));
+    }
+
 
     /**
      * Generate account identifier
