@@ -18,13 +18,18 @@ public class CreditCardGenerator {
 
     private String creditCardNumber;
     private String pin;
-    private final Predicate<String> isValid = CreditCardNumberValidator::validate;
+    private Predicate<String> isValid;
 
     private CreditCardGenerator() {
     }
 
     public static CreditCardGenerator init() {
         return new CreditCardGenerator();
+    }
+
+    public CreditCardGenerator withValidator() {
+        isValid = CreditCardNumberValidator::validate;
+        return this;
     }
 
     /**
@@ -75,6 +80,9 @@ public class CreditCardGenerator {
      */
     public String validateCreditCardNumber(String number) {
         int checkSum = 0;
+        if (isValid == null) {
+            isValid = CreditCardNumberValidator::validate;
+        }
         while (isValid.negate().test(number + checkSum)) {
             checkSum += 1;
         }

@@ -73,6 +73,7 @@ public class CardServiceImpl implements CardService {
     @Override
     public void createCard() {
         Card card = CreditCardGenerator.init()
+                .withValidator()
                 .createPin()
                 .createCardNumber()
                 .build();
