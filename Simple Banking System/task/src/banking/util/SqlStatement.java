@@ -3,7 +3,7 @@ package banking.util;
 /**
  * This class provides all SQL Statements needed by the repository
  *
- * @author Beauclair Dongmo Ngnintedem Beauclair
+ * @author Beauclair Dongmo Ngnintedem
  * @see banking.repository.CardRepository
  */
 public class SqlStatement {

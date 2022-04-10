@@ -2,7 +2,7 @@ package banking;
 
 import banking.services.AccountSessionService;
 import banking.services.CardService;
-import banking.services.RequestUserTo;
+import banking.util.RequestUserTo;
 
 import java.util.List;
 import java.util.Scanner;
@@ -28,7 +28,7 @@ public class Automate {
 
     public Automate(CardService cardService) {
         this.cardService = cardService;
-        cardInfoValidation = cardService::isCardAvailableByCardNumberAndPin;
+        cardInfoValidation = cardService::isCardWithCardNumberAndPinAvailable;
     }
 
     /**

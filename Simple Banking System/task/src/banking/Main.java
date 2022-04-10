@@ -1,6 +1,6 @@
 package banking;
 
-import banking.generator.AutomateBuilder;
+import banking.builder.AutomateBuilder;
 
 public class Main {
     public static void main(String[] args) {

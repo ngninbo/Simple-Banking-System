@@ -1,4 +1,4 @@
-package banking.generator;
+package banking.builder;
 
 import banking.Automate;
 import banking.repository.CardRepository;

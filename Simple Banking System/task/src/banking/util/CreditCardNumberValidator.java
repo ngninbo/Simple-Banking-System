@@ -8,12 +8,8 @@ public interface CreditCardNumberValidator {
      * @param creditCardNumber Credit card number
      * @return isValid Whether the given number passed the Luhn algorithm
      */
-    static boolean validate(String creditCardNumber) {
+    static boolean isValid(String creditCardNumber) {
 
-        return computeCheckSum(creditCardNumber) % 10 == 0;
-    }
-
-    static int computeCheckSum(String creditCardNumber) {
         int checkSum = Integer.parseInt(String.valueOf(creditCardNumber.charAt(creditCardNumber.length() - 1)));
 
         for (int i = 0; i < creditCardNumber.length() - 1; i++) {
@@ -28,6 +24,7 @@ public interface CreditCardNumberValidator {
             }
             checkSum += digit;
         }
-        return checkSum;
+
+        return checkSum % 10 == 0;
     }
 }

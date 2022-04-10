@@ -19,11 +19,11 @@ public interface CardService {
 
     void updateBalanceByCardNumber(String cardNumber, String targetCardNumber, long amount);
 
-    boolean isCardAvailableByCardNumberAndPin(String cardNumber, String pin);
+    boolean isCardWithCardNumberAndPinAvailable(String cardNumber, String pin);
 
-    boolean isCardByNumberPresent(String targetCardNumber);
+    boolean isCardWithNumberPresent(String targetCardNumber);
 
-    boolean isCardByNumberAndPinPresent(String cardNumber, String pin);
+    boolean isCardWithNumberAndPinPresent(String cardNumber, String pin);
 
     Predicate<String> cardNumberPresentChecker();
 

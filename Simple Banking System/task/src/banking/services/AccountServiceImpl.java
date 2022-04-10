@@ -1,6 +1,7 @@
 package banking.services;
 
 import banking.util.CreditCardNumberValidator;
+import banking.util.RequestUserTo;
 
 import java.util.function.Predicate;
 
@@ -12,7 +13,7 @@ public class AccountServiceImpl implements AccountService {
     private final CardService cardService;
 
     private final Predicate<String> isNotPresent;
-    private final Predicate<String> isValid = CreditCardNumberValidator::validate;
+    private final Predicate<String> isValid = CreditCardNumberValidator::isValid;
 
     public AccountServiceImpl(String cardNumber, CardService cardService) {
         this.cardNumber = cardNumber;

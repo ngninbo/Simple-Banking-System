@@ -1,6 +1,6 @@
 package banking.services;
 
-import banking.generator.CreditCardGenerator;
+import banking.builder.CreditCardBuilder;
 import banking.models.Card;
 import banking.repository.CardRepository;
 import banking.util.CreditCardNumberValidator;
@@ -13,7 +13,7 @@ import static banking.util.TextOutput.CARD_INFORMATION_AFTER_CREATION_TEXT;
 public class CardServiceImpl implements CardService {
 
     private final CardRepository repository;
-    private final Predicate<String> isValid = CreditCardNumberValidator::validate;
+    private final Predicate<String> isValid = CreditCardNumberValidator::isValid;
 
     public CardServiceImpl(CardRepository repository) {
         this.repository = repository;
@@ -51,31 +51,30 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public boolean isCardAvailableByCardNumberAndPin(String cardNumber, String pin) {
-        return isValid.test(cardNumber) && isCardByNumberAndPinPresent(cardNumber, pin);
+    public boolean isCardWithCardNumberAndPinAvailable(String cardNumber, String pin) {
+        return isValid.test(cardNumber) && isCardWithNumberAndPinPresent(cardNumber, pin);
     }
 
     @Override
-    public boolean isCardByNumberPresent(String targetCardNumber) {
+    public boolean isCardWithNumberPresent(String targetCardNumber) {
         return this.findCardByNumber(targetCardNumber).isPresent();
     }
 
     @Override
-    public boolean isCardByNumberAndPinPresent(String cardNumber, String pin) {
+    public boolean isCardWithNumberAndPinPresent(String cardNumber, String pin) {
         return repository.findCardByNumberAndPin(cardNumber, pin).isPresent();
     }
 
     @Override
     public Predicate<String> cardNumberPresentChecker() {
-        return this::isCardByNumberPresent;
+        return this::isCardWithNumberPresent;
     }
 
     @Override
     public void createCard() {
-        Card card = CreditCardGenerator.init()
-                .withValidator()
-                .createPin()
-                .createCardNumber()
+        Card card = CreditCardBuilder.init()
+                .withCardNumber()
+                .withPin()
                 .build();
 
         this.saveCard(card);
