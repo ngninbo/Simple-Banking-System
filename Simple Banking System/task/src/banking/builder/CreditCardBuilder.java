@@ -25,7 +25,10 @@ public class CreditCardBuilder {
     }
 
     public CreditCardBuilder withCardNumber() {
-        this.creditCardNumber = CreditCardNumberGenerator.generateCardNumber(BANK_IDENTIFICATION_NUMBER, MIN_ACCOUNT_IDENTIFIER, MAX_ACCOUNT_IDENTIFIER);
+        this.creditCardNumber = CreditCardNumberGenerator.generateCardNumber(
+                BANK_IDENTIFICATION_NUMBER,
+                MIN_ACCOUNT_IDENTIFIER,
+                MAX_ACCOUNT_IDENTIFIER);
         return this;
     }
 

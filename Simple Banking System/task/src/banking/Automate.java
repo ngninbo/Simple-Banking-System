@@ -21,7 +21,6 @@ import static banking.util.TextOutput.*;
 public class Automate {
 
     private boolean exit = false;
-    private int selectedOption;
     private final CardService cardService;
     private final BiFunction<String, String, Boolean> cardInfoValidation;
 
@@ -39,13 +38,13 @@ public class Automate {
         while (!exit) {
             int choice = displaySelectionMenu(Menu.START);
             switch (choice) {
-                case 1:
+                case CREATE_CARD_CMD:
                     cardService.createCard();
                     break;
-                case 2:
+                case LOG_IN_CMD:
                     loginToAccount();
                     break;
-                case 0:
+                case EXIT_CMD:
                     printByeMessage();
                     exit = true;
                     break;
@@ -60,17 +59,7 @@ public class Automate {
      * @return User selection
      */
     private int displaySelectionMenu(Menu menu) {
-
-        switch (menu) {
-            case START:
-                selectedOption = displayOptions(START_MENU_OPTIONS);
-                break;
-            case LOGIN:
-                selectedOption = displayOptions(LOGIN_MENU_OPTIONS);
-                break;
-        }
-
-        return selectedOption;
+        return menu == Menu.START ? displayOptions(START_MENU_OPTIONS) : displayOptions(LOGIN_MENU_OPTIONS);
     }
 
     /**
@@ -91,24 +80,24 @@ public class Automate {
                 int action = displaySelectionMenu(Menu.LOGIN);
 
                 switch (action) {
-                    case 1:
+                    case BALANCE_CMD:
                         account.printAccountBalance();
                         break;
-                    case 2:
+                    case ADD_INCOME_CMD:
                         account.addIncome();
                         break;
-                    case 3:
+                    case TRANSFER_CMD:
                         account.doTransfer();
                         break;
-                    case 4:
+                    case CLOSE_ACCOUNT_CMD:
                         account.closeAccount();
                         login = false;
                         break;
-                    case 5:
+                    case LOG_OUT_CMD:
                         printLoginState(false);
                         login = false;
                         break;
-                    case 0:
+                    case EXIT_CMD:
                         printByeMessage();
                         break;
                 }
@@ -156,8 +145,7 @@ public class Automate {
      * @param loginState login state
      */
     private void printLoginState(boolean loginState) {
-        String state;
-        state = loginState ? LOG_IN_SUCCEED_MSG : LOG_OUT_SUCCEED_MSG;
+        String state = String.format(LOG_IN_STATUS_MSG, loginState ? IN_TXT : OUT_TXT);
         System.out.println(state);
     }
 }

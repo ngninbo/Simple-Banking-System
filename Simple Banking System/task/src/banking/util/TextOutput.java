@@ -30,12 +30,22 @@ public class TextOutput {
             "Log out",
             EXIT_OPTION);
 
+    public static final int BALANCE_CMD = 1;
+    public static final int CREATE_CARD_CMD = 1;
+    public static final int ADD_INCOME_CMD = 2;
+    public static final int TRANSFER_CMD = 3;
+    public static final int CLOSE_ACCOUNT_CMD = 4;
+    public static final int LOG_OUT_CMD = 5;
+    public static final int LOG_IN_CMD = 2;
+    public static final int EXIT_CMD = 0;
+
     public static final String USER_CARD_NUMBER_INPUT_REQUEST_MSG = "\nEnter your card number:";
     public static final String USER_PIN_INPUT_REQUEST_MSG = "Enter your PIN:";
     public static final String BYE_MSG = "\nBye!";
     public static final String WRONG_CARD_NUMBER_OR_PIN_ERROR_MSG = "\nWrong card number or PIN!\n";
-    public static final String LOG_OUT_SUCCEED_MSG = "\nYou have successfully logged out!\n";
-    public static final String LOG_IN_SUCCEED_MSG = "\nYou have successfully logged in!\n";
+    public static final String OUT_TXT = "out";
+    public static final String IN_TXT = "in";
+    public static final String LOG_IN_STATUS_MSG = "\nYou have successfully logged %s!\n";
     public static final String CARD_INFORMATION_AFTER_CREATION_TEXT = "\nYour card has been created\n" +
             "Your card number:\n%s\nYour card PIN:\n%s\n\n";
     public static final String TARGET_CARD_NUMBER_INPUT_REQUEST_MSG = "Enter card number:";
