@@ -1,5 +1,7 @@
 package banking.services;
 
+import java.io.IOException;
+
 /**
  * This class is for performing transaction on an account after logging in.
  * @author Beauclair Dongmo Ngnintedem
@@ -19,7 +21,7 @@ public class AccountSessionService {
     /**
      * Transfer money to the current account to another
      */
-    public void doTransfer() {
+    public void doTransfer() throws IOException {
         accountService.doTransfer();
     }
 

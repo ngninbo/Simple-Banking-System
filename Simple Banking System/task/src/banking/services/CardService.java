@@ -2,6 +2,7 @@ package banking.services;
 
 import banking.models.Card;
 
+import java.io.IOException;
 import java.util.Optional;
 import java.util.function.Predicate;
 
@@ -27,5 +28,5 @@ public interface CardService {
 
     Predicate<String> cardNumberPresentChecker();
 
-    void createCard();
+    void createCard() throws IOException;
 }

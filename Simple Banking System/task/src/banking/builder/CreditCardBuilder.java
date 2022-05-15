@@ -3,8 +3,10 @@ package banking.builder;
 import banking.generator.CreditCardNumberGenerator;
 import banking.generator.PinGenerator;
 import banking.models.Card;
+import banking.util.PropertiesLoader;
 
-import static banking.util.CardGeneratorConstants.*;
+import java.io.IOException;
+import java.util.Properties;
 
 
 /**
@@ -17,6 +19,16 @@ public class CreditCardBuilder {
     private String creditCardNumber;
     private String pin;
 
+    Properties properties;
+
+    {
+        try {
+            properties = PropertiesLoader.loadProperties("application.properties");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private CreditCardBuilder() {
     }
 
@@ -26,14 +38,16 @@ public class CreditCardBuilder {
 
     public CreditCardBuilder withCardNumber() {
         this.creditCardNumber = CreditCardNumberGenerator.generateCardNumber(
-                BANK_IDENTIFICATION_NUMBER,
-                MIN_ACCOUNT_IDENTIFIER,
-                MAX_ACCOUNT_IDENTIFIER);
+                Long.parseLong(properties.getProperty("BANK_IDENTIFICATION_NUMBER")),
+                Long.parseLong(properties.getProperty("MIN_ACCOUNT_IDENTIFIER")),
+                Long.parseLong(properties.getProperty("MAX_ACCOUNT_IDENTIFIER")));
         return this;
     }
 
-    public CreditCardBuilder withPin() {
-        this.pin = PinGenerator.generatePin(MIN_PIN, MAX_PIN);
+    public CreditCardBuilder withPin() throws IOException {
+        this.pin = PinGenerator.generatePin(
+                Integer.parseInt(properties.getProperty("MIN_PIN")),
+                Integer.parseInt(properties.getProperty("MAX_PIN")));
         return this;
     }
 

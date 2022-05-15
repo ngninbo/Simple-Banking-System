@@ -1,12 +1,13 @@
 package banking.repository;
 
 import banking.models.Card;
+import banking.util.PropertiesLoader;
 import org.sqlite.SQLiteDataSource;
 
+import java.io.IOException;
 import java.sql.*;
 import java.util.Optional;
-
-import static banking.util.SqlStatement.*;
+import java.util.Properties;
 
 /**
  * This class provides the CRUD methods
@@ -17,6 +18,16 @@ public class CardRepository {
 
     private final SQLiteDataSource dataSource;
     private PreparedStatement statement;
+
+    private Properties properties;
+
+    {
+        try {
+            properties = PropertiesLoader.loadProperties("statements.properties");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     private CardRepository(String filename) {
         String url = "jdbc:sqlite:" + filename;
@@ -38,7 +49,8 @@ public class CardRepository {
 
         try (Connection connection = dataSource.getConnection()) {
             connection.setAutoCommit(false);
-            PreparedStatement statement = connection.prepareStatement(INSERT_INTO_CARD_NUMBER_PIN_BALANCE_VALUES);
+            PreparedStatement statement = connection
+                    .prepareStatement(properties.getProperty("INSERT_INTO_CARD_NUMBER_PIN_BALANCE_VALUES"));
             statement.setString(1, card.getCreditCardNumber());
             statement.setString(2, card.getPin());
             statement.setLong(3, card.getBalance());
@@ -61,7 +73,7 @@ public class CardRepository {
 
             Statement statement = connection.createStatement();
 
-            statement.executeUpdate(CREATE_TABLE_CARD);
+            statement.executeUpdate(properties.getProperty("CREATE_TABLE_CARD"));
 
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();
@@ -78,7 +90,7 @@ public class CardRepository {
 
         Card card = null;
         try (Connection connection = dataSource.getConnection()) {
-            statement = connection.prepareStatement(SELECT_FROM_CARD_WHERE_NUMBER);
+            statement = connection.prepareStatement(properties.getProperty("SELECT_FROM_CARD_WHERE_NUMBER"));
             statement.setString(1, cardNumber);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
@@ -104,7 +116,7 @@ public class CardRepository {
         long balance = 0L;
 
         try (Connection connection = dataSource.getConnection()) {
-            statement = connection.prepareStatement(SELECT_BALANCE_FROM_CARD_WHERE_NUMBER);
+            statement = connection.prepareStatement(properties.getProperty("SELECT_BALANCE_FROM_CARD_WHERE_NUMBER"));
             statement.setString(1, number);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
@@ -130,7 +142,7 @@ public class CardRepository {
             // Disable auto commit mode
             connection.setAutoCommit(false);
 
-            statement = connection.prepareStatement(UPDATE_CARD_INCREASING_BALANCE_WHERE_NUMBER);
+            statement = connection.prepareStatement(properties.getProperty("UPDATE_CARD_INCREASING_BALANCE_WHERE_NUMBER"));
             statement.setLong(1, income);
             statement.setString(2, cardNumber);
 
@@ -156,13 +168,15 @@ public class CardRepository {
             // Disable auto commit mode
             connection.setAutoCommit(false);
             // connection.setSavepoint();
-            statement = connection.prepareStatement(UPDATE_CARD_INCREASING_BALANCE_WHERE_NUMBER);
+            statement = connection.prepareStatement(
+                    properties.getProperty("UPDATE_CARD_INCREASING_BALANCE_WHERE_NUMBER"));
             statement.setLong(1, amount);
             statement.setString(2, targetCardNumber);
             statement.executeUpdate();
 
             // connection.setSavepoint();
-            statement = connection.prepareStatement(UPDATE_CARD_DECREASING_BALANCE_WHERE_NUMBER);
+            statement = connection.prepareStatement(
+                    properties.getProperty("UPDATE_CARD_DECREASING_BALANCE_WHERE_NUMBER"));
             statement.setLong(1, amount);
             statement.setString(2, currentCardNumber);
             statement.executeUpdate();
@@ -183,7 +197,7 @@ public class CardRepository {
     public void deleteCardByCardNumber(String cardNumber) {
 
         try (Connection connection = dataSource.getConnection()) {
-            statement = connection.prepareStatement(DELETE_CARD_BY_NUMBER);
+            statement = connection.prepareStatement(properties.getProperty("DELETE_CARD_BY_NUMBER"));
             statement.setString(1, cardNumber);
             statement.executeUpdate();
         } catch (SQLException e) {

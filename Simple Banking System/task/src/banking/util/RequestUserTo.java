@@ -1,8 +1,7 @@
 package banking.util;
 
+import java.io.IOException;
 import java.util.Scanner;
-
-import static banking.util.TextOutput.TARGET_CARD_NUMBER_INPUT_REQUEST_MSG;
 
 public interface RequestUserTo {
 
@@ -22,8 +21,10 @@ public interface RequestUserTo {
      *
      * @return Target card number to which money has to be transfer
      */
-    static String inputTargetCardNumber() {
-        return inputCardInformation(TARGET_CARD_NUMBER_INPUT_REQUEST_MSG);
+    static String inputTargetCardNumber() throws IOException {
+        return inputCardInformation(PropertiesLoader
+                .loadProperties("logs.properties")
+                .getProperty("TARGET_CARD_NUMBER_INPUT_REQUEST_MSG"));
     }
 
     /**
