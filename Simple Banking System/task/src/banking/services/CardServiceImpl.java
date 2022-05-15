@@ -4,11 +4,11 @@ import banking.builder.CreditCardBuilder;
 import banking.models.Card;
 import banking.repository.CardRepository;
 import banking.util.CreditCardNumberValidator;
+import banking.util.PropertiesLoader;
 
+import java.io.IOException;
 import java.util.Optional;
 import java.util.function.Predicate;
-
-import static banking.util.TextOutput.CARD_INFORMATION_AFTER_CREATION_TEXT;
 
 public class CardServiceImpl implements CardService {
 
@@ -71,7 +71,7 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public void createCard() {
+    public void createCard() throws IOException {
         Card card = CreditCardBuilder.init()
                 .withCardNumber()
                 .withPin()
@@ -79,7 +79,11 @@ public class CardServiceImpl implements CardService {
 
         this.saveCard(card);
 
-        System.out.printf(CARD_INFORMATION_AFTER_CREATION_TEXT,
-                card.getCreditCardNumber(), card.getPin());
+        System.out.printf(
+                PropertiesLoader
+                        .loadProperties("logs.properties")
+                        .getProperty("CARD_INFORMATION_AFTER_CREATION_TEXT") +"%n%n",
+                card.getCreditCardNumber(),
+                card.getPin());
     }
 }
