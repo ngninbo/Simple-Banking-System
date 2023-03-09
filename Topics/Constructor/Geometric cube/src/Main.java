@@ -12,7 +12,8 @@ public class Main {
 
         // creating an instance
         GeometricCuboid cuboid = new GeometricCuboid(width, height, length);
-        System.out.println(cuboid);
+
+        System.out.println(cuboid.toString());
     }
 }
 

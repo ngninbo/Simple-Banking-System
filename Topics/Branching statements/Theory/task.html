@@ -2,8 +2,8 @@
 <html>
  <head></head>
  <body>
-  <p><strong>Branching statements</strong> are used to alter the standard behavior of loops; they can terminate a loop or skip some iterations.</p> 
-  <h5 style="text-align: center;">The break statement</h5> 
+  <p>In certain cases, you may want to alter the standard behavior of a loop. The Java programming language provides <strong>branching statements</strong> for this purpose that can terminate a loop or skip some of its iterations.</p> 
+  <h5 id="the-break-statement" style="text-align: center;">The break statement</h5> 
   <p>The <strong>break</strong> statement has two uses:</p> 
   <ul> 
    <li>it terminates the current loop of any type (<strong>for</strong>, <strong>while</strong>, <strong>do-while</strong>);</li> 
@@ -41,9 +41,9 @@ while (true) { // the condition to continue the loop
 0 1 2 3 4 5 6 7 
 0 1 2 3 4 5 6 7 8 
 0 1 2 3 4 5 6 7 8 9</code></pre> 
-  <p>To stop the outer loop we'd like to declare a Boolean variable <code class="language-java">stopped</code> and use it as a special Boolean flag.</p> 
+  <p>To stop the outer loop we could declare a Boolean variable <code class="language-java">stopped</code> and use it as a special Boolean flag.</p> 
   <pre><code class="language-java">boolean stopped = false;
-for (int i = 0; (i &lt; 10) &amp;&amp; !stopped; i++) {
+for (int i = 0; i &lt; 10 &amp;&amp; !stopped; i++) {
     for (int j = 0; j &lt; 10; j++) {
         System.out.print(j + " ");
         if (i == j) {
@@ -56,11 +56,11 @@ for (int i = 0; (i &lt; 10) &amp;&amp; !stopped; i++) {
   <p>Now, the program's output is not the same:</p> 
   <pre><code class="language-java">0</code></pre> 
   <p>There is another way to stop the outer loop: the labeled break operator. However, it's not good practice to use it. Google it if you are really interested.</p> 
-  <h5 style="text-align: center;">The continue statement</h5> 
+  <h5 id="the-continue-statement" style="text-align: center;">The continue statement</h5> 
   <p>It causes a loop to skip the current iteration and go to the next one.</p> 
-  <p>This statement can be used inside any kind of loops.</p> 
+  <p>This statement can be used inside any kind of loop.</p> 
   <ul> 
-   <li>inside the <strong>for-loop</strong>, the continue causes control to immediately move to the increment/decrement statement;</li> 
+   <li>inside the <strong>for-loop</strong>, the continue statement causes control to immediately move to the increment/decrement statement;</li> 
    <li>inside the <strong>while</strong> or<strong> do-while loop</strong>, control immediately moves to the condition.</li> 
   </ul> 
   <p>In the following example, a sequence of numbers is output. Odd numbers are skipped.</p> 

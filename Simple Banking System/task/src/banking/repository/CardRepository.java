@@ -102,7 +102,7 @@ public class CardRepository {
             e.printStackTrace();
         }
 
-        return card != null ? Optional.of(card) : Optional.empty();
+        return Optional.ofNullable(card);
     }
 
     /**

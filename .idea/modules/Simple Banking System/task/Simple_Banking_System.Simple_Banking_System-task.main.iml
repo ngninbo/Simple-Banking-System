@@ -5,9 +5,10 @@
     <exclude-output />
     <content url="file://$MODULE_DIR$/../../../../Simple Banking System/task/src">
       <sourceFolder url="file://$MODULE_DIR$/../../../../Simple Banking System/task/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../../Simple Banking System/task/src/main/resources" type="java-resource" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Gradle: org.xerial:sqlite-jdbc:3.8.11.2" level="project" />
+    <orderEntry type="library" name="Gradle: org.xerial:sqlite-jdbc:3.36.0" level="project" />
   </component>
 </module>

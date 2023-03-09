@@ -48,21 +48,17 @@ public class AccountServiceImpl implements AccountService {
 
         if (isValid.negate().test(targetCardNumber)) {
             log("CARD_NUMBER_ERROR_MSG");
+        } else if (targetCardNumber.equals(cardNumber)) {
+            log("SAME_ACCOUNT_ERROR_MSG");
+        } else if (isNotPresent.test(targetCardNumber)) {
+            log("CARD_NOT_EXISTS_ERROR_MSG");
         } else {
-            if (targetCardNumber.equals(cardNumber)) {
-                log("SAME_ACCOUNT_ERROR_MSG");
+            long amount = RequestUserTo.inputAmount(properties.getProperty("AMOUNT_TO_TRANSFER_INPUT_REQUEST_MSG"));
+            if (amount > cardService.readBalanceByCardNumber(cardNumber)) {
+                log("NOT_ENOUGH_MONEY_ERROR_MSG");
             } else {
-                if (isNotPresent.test(targetCardNumber)) {
-                    log("CARD_NOT_EXISTS_ERROR_MSG");
-                } else {
-                    long amount = RequestUserTo.inputAmount(properties.getProperty("AMOUNT_TO_TRANSFER_INPUT_REQUEST_MSG"));
-                    if (amount > cardService.readBalanceByCardNumber(cardNumber)) {
-                        log("NOT_ENOUGH_MONEY_ERROR_MSG");
-                    } else {
-                        cardService.updateBalanceByCardNumber(cardNumber, targetCardNumber, amount);
-                        log("SUCCESS_MSG");
-                    }
-                }
+                cardService.updateBalanceByCardNumber(cardNumber, targetCardNumber, amount);
+                log("SUCCESS_MSG");
             }
         }
     }

@@ -19,7 +19,7 @@ public class CreditCardBuilder {
     private String creditCardNumber;
     private String pin;
 
-    Properties properties;
+    private Properties properties;
 
     {
         try {

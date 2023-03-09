@@ -6,6 +6,6 @@
     <content url="file://$MODULE_DIR$/../../../../../../Simple Banking System/task/build/test-results/src" />
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Gradle: org.xerial:sqlite-jdbc:3.8.11.2" level="project" />
+    <orderEntry type="library" name="Gradle: org.xerial:sqlite-jdbc:3.36.0" level="project" />
   </component>
 </module>
