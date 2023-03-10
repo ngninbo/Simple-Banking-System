@@ -21,11 +21,7 @@ public abstract class Menu {
     protected MenuItem item = MenuItem.UNKNOWN;
 
     {
-        try {
-            properties = PropertiesLoader.loadProperties("logs.properties");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+       properties = PropertiesLoader.getInstance().messages();
     }
 
     public Menu(CardService cardService) {

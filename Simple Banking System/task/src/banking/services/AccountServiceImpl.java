@@ -13,14 +13,10 @@ public class AccountServiceImpl implements AccountService {
     private final String cardNumber;
     private final CardService cardService;
 
-    Properties properties;
+    private final Properties properties;
 
     {
-        try {
-            properties = PropertiesLoader.loadProperties("logs.properties");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        properties = PropertiesLoader.getInstance().messages();
     }
 
     private final Predicate<String> isNotPresent;

@@ -80,8 +80,7 @@ public class CardServiceImpl implements CardService {
         this.saveCard(card);
 
         System.out.printf(
-                PropertiesLoader
-                        .loadProperties("logs.properties")
+                PropertiesLoader.getInstance().messages()
                         .getProperty("CARD_INFORMATION_AFTER_CREATION_TEXT") +"%n%n",
                 card.getCreditCardNumber(),
                 card.getPin());

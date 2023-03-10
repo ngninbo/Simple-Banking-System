@@ -19,14 +19,10 @@ public class CreditCardBuilder {
     private String creditCardNumber;
     private String pin;
 
-    private Properties properties;
+    private final Properties properties;
 
     {
-        try {
-            properties = PropertiesLoader.loadProperties("application.properties");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        properties = PropertiesLoader.getInstance().properties();
     }
 
     private CreditCardBuilder() {

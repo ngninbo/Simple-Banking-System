@@ -4,7 +4,6 @@ import banking.models.Card;
 import banking.util.PropertiesLoader;
 import org.sqlite.SQLiteDataSource;
 
-import java.io.IOException;
 import java.sql.*;
 import java.util.Optional;
 import java.util.Properties;
@@ -19,14 +18,10 @@ public class CardRepository {
     private final SQLiteDataSource dataSource;
     private PreparedStatement statement;
 
-    private Properties properties;
+    private final Properties properties;
 
     {
-        try {
-            properties = PropertiesLoader.loadProperties("statements.properties");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        properties = PropertiesLoader.getInstance().statements();
     }
 
     private CardRepository(String filename) {
