@@ -6,8 +6,6 @@ import java.io.IOException;
 
 public class StartMenu extends Menu {
 
-    private MenuItem item = MenuItem.UNKNOWN;
-
     public StartMenu(CardService cardService) {
         super(cardService);
     }
@@ -29,14 +27,6 @@ public class StartMenu extends Menu {
         }
 
         return true;
-    }
-
-    @Override
-    public void process() throws IOException {
-        while (process(item)) {
-            int choice = displayMenu();
-            item = getMenuItem(choice);
-        }
     }
 
     @Override

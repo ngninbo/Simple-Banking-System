@@ -12,8 +12,6 @@ public class AccountMenu extends Menu {
     private final BiFunction<String, String, Boolean> cardInfoValidation;
     private AccountSessionService account;
 
-    private MenuItem item = MenuItem.UNKNOWN;
-
     public AccountMenu(CardService cardService) {
         super(cardService);
         cardInfoValidation = cardService::isCardWithCardNumberAndPinAvailable;
@@ -29,11 +27,7 @@ public class AccountMenu extends Menu {
         } else {
             account = AccountSessionService.accountSession(cardNumber, cardService);
             printLoginState(properties.getProperty("IN_TXT"));
-
-            while (process(item)) {
-                int action = displayMenu();
-                item = getMenuItem(action);
-            }
+            super.process();
         }
     }
 

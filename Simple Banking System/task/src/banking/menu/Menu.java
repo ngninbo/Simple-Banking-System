@@ -14,11 +14,11 @@ public abstract class Menu {
     protected abstract boolean process(MenuItem menuItem) throws IOException;
 
     protected abstract MenuItem getMenuItem(int choice);
-    protected abstract void process() throws IOException;
     protected abstract int displayMenu();
 
     protected Properties properties;
     protected final CardService cardService;
+    protected MenuItem item = MenuItem.UNKNOWN;
 
     {
         try {
@@ -30,6 +30,13 @@ public abstract class Menu {
 
     public Menu(CardService cardService) {
         this.cardService = cardService;
+    }
+
+    public void process() throws IOException {
+        while (process(item)) {
+            int choice = displayMenu();
+            item = getMenuItem(choice);
+        }
     }
 
     protected void exit() {
