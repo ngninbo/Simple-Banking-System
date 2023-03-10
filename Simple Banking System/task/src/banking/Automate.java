@@ -21,7 +21,7 @@ public class Automate extends Thread {
     }
 
     @Override
-    public void start() {
+    public void run() {
 
         try {
             new StartMenu(cardService).process();
