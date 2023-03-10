@@ -31,17 +31,7 @@ public class StartMenu extends Menu {
 
     @Override
     protected MenuItem getMenuItem(int choice) {
-
-        final int size = MenuItem.start().size();
-        if (choice >= size) {
-            return MenuItem.UNKNOWN;
-        }
-
-        if (choice == 0) {
-            return MenuItem.EXIT;
-        }
-
-        return MenuItem.start().get(choice - 1);
+        return getMenuItem(choice, MenuItem.start());
     }
 
     @Override

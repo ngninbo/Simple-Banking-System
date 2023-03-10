@@ -65,4 +65,18 @@ public abstract class Menu {
         System.exit(0);
     }
 
+    protected MenuItem getMenuItem(int choice, List<MenuItem> items) {
+
+        final int size = items.size();
+        if (choice >= size) {
+            return MenuItem.UNKNOWN;
+        }
+
+        if (choice == 0) {
+            return MenuItem.EXIT;
+        }
+
+        return items.get(choice - 1);
+    }
+
 }

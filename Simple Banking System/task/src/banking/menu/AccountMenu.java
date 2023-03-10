@@ -54,16 +54,7 @@ public class AccountMenu extends Menu {
 
     @Override
     protected MenuItem getMenuItem(int choice) {
-        int size = MenuItem.account().size();
-        if (choice >= size) {
-            return MenuItem.UNKNOWN;
-        }
-
-        if (choice == 0) {
-            return MenuItem.EXIT;
-        }
-
-        return MenuItem.account().get(choice - 1);
+        return getMenuItem(choice, MenuItem.account());
     }
 
     @Override

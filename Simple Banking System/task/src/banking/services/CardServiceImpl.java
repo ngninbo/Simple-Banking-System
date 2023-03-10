@@ -1,21 +1,12 @@
 package banking.services;
 
-import banking.builder.CreditCardBuilder;
-import banking.generator.CreditCardNumberGenerator;
-import banking.generator.PinGenerator;
 import banking.models.Card;
 import banking.repository.CardRepository;
-import banking.util.CreditCardNumberValidator;
-import banking.util.PropertiesLoader;
-
-import java.io.IOException;
 import java.util.Optional;
-import java.util.function.Predicate;
 
 public class CardServiceImpl implements CardService {
 
     private final CardRepository repository;
-    private final Predicate<String> isValid = CreditCardNumberValidator::isValid;
 
     public CardServiceImpl(CardRepository repository) {
         this.repository = repository;
@@ -52,39 +43,9 @@ public class CardServiceImpl implements CardService {
         repository.updateCardsByNumbers(cardNumber, targetCardNumber, amount);
     }
 
-    @Override
-    public boolean isCardWithCardNumberAndPinAvailable(String cardNumber, String pin) {
-        return isValid.test(cardNumber) && isCardWithNumberAndPinPresent(cardNumber, pin);
-    }
-
-    @Override
-    public boolean isCardWithNumberPresent(String targetCardNumber) {
-        return this.findCardByNumber(targetCardNumber).isPresent();
-    }
 
     @Override
     public boolean isCardWithNumberAndPinPresent(String cardNumber, String pin) {
         return repository.findCardByNumberAndPin(cardNumber, pin).isPresent();
-    }
-
-    @Override
-    public Predicate<String> cardNumberPresentChecker() {
-        return this::isCardWithNumberPresent;
-    }
-
-    @Override
-    public void createCard() {
-        Card card = CreditCardBuilder.init()
-                .withCardNumber(CreditCardNumberGenerator.cardNumber())
-                .withPin(PinGenerator.pin())
-                .build();
-
-        this.saveCard(card);
-
-        System.out.printf(
-                PropertiesLoader.getInstance().messages()
-                        .getProperty("CARD_INFORMATION_AFTER_CREATION_TEXT") +"%n%n",
-                card.getCreditCardNumber(),
-                card.getPin());
     }
 }

@@ -1,8 +1,12 @@
 package banking.services;
 
+import banking.builder.CreditCardBuilder;
+import banking.generator.CreditCardNumberGenerator;
+import banking.generator.PinGenerator;
 import banking.models.Card;
+import banking.util.CreditCardNumberValidator;
+import banking.util.PropertiesLoader;
 
-import java.io.IOException;
 import java.util.Optional;
 import java.util.function.Predicate;
 
@@ -20,13 +24,32 @@ public interface CardService {
 
     void updateBalanceByCardNumber(String cardNumber, String targetCardNumber, long amount);
 
-    boolean isCardWithCardNumberAndPinAvailable(String cardNumber, String pin);
-
-    boolean isCardWithNumberPresent(String targetCardNumber);
-
     boolean isCardWithNumberAndPinPresent(String cardNumber, String pin);
 
-    Predicate<String> cardNumberPresentChecker();
+    default boolean isCardWithNumberPresent(String targetCardNumber) {
+        return findCardByNumber(targetCardNumber).isPresent();
+    }
 
-    void createCard() throws IOException;
+    default boolean isCardWithCardNumberAndPinAvailable(String cardNumber, String pin) {
+        return CreditCardNumberValidator.isValid(cardNumber) && isCardWithNumberAndPinPresent(cardNumber, pin);
+    }
+
+    default Predicate<String> cardNumberPresentChecker() {
+        return this::isCardWithNumberPresent;
+    }
+
+    default void createCard() {
+        Card card = CreditCardBuilder.init()
+                .withCardNumber(CreditCardNumberGenerator.cardNumber())
+                .withPin(PinGenerator.pin())
+                .build();
+
+        this.saveCard(card);
+
+        System.out.printf(
+                PropertiesLoader.getInstance().messages()
+                        .getProperty("CARD_INFORMATION_AFTER_CREATION_TEXT") +"%n%n",
+                card.getCreditCardNumber(),
+                card.getPin());
+    }
 }
