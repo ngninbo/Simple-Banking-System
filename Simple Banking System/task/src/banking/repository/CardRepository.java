@@ -1,5 +1,6 @@
 package banking.repository;
 
+import banking.builder.CardFactory;
 import banking.models.Card;
 import banking.util.PropertiesLoader;
 import org.sqlite.SQLiteDataSource;
@@ -89,7 +90,7 @@ public class CardRepository {
             statement.setString(1, cardNumber);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                card = Card.createCard(resultSet.getString("number"),
+                card = CardFactory.createCard(resultSet.getString("number"),
                         resultSet.getString("pin"), resultSet.getInt("balance"));
             }
 

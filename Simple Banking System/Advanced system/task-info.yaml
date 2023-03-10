@@ -1211,9 +1211,6 @@ files:
 - name: src/main/resources/statements.properties
   visible: true
   learner_created: true
-- name: src/banking/Login.java
-  visible: true
-  learner_created: true
 - name: src/banking/command/Command.java
   visible: true
   learner_created: true
@@ -1229,7 +1226,7 @@ files:
 - name: src/banking/menu/AccountMenu.java
   visible: true
   learner_created: true
-- name: src/banking/menu/MenuOption.java
+- name: src/banking/builder/CardFactory.java
   visible: true
   learner_created: true
 feedback_link: https://hyperskill.org/learn/step/8428#comment

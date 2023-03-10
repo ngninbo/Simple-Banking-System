@@ -22,4 +22,11 @@ public class CreditCardNumberGenerator extends NumberGenerator {
 
         return cardNumber + checkSum;
     }
+
+    public static String cardNumber() {
+        return CreditCardNumberGenerator.generateCardNumber(
+                Long.parseLong(PROPERTIES.getProperty("BANK_IDENTIFICATION_NUMBER")),
+                Long.parseLong(PROPERTIES.getProperty("MIN_ACCOUNT_IDENTIFIER")),
+                Long.parseLong(PROPERTIES.getProperty("MAX_ACCOUNT_IDENTIFIER")));
+    }
 }

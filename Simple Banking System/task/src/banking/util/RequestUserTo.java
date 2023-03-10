@@ -21,7 +21,7 @@ public interface RequestUserTo {
      * @return Target card number to which money has to be transfer
      */
     static String inputTargetCardNumber() {
-        return inputCardInformation(PropertiesLoader.getInstance().properties()
+        return inputCardInformation(PropertiesLoader.getInstance().messages()
                 .getProperty("TARGET_CARD_NUMBER_INPUT_REQUEST_MSG"));
     }
 

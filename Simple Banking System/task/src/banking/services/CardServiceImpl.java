@@ -1,6 +1,8 @@
 package banking.services;
 
 import banking.builder.CreditCardBuilder;
+import banking.generator.CreditCardNumberGenerator;
+import banking.generator.PinGenerator;
 import banking.models.Card;
 import banking.repository.CardRepository;
 import banking.util.CreditCardNumberValidator;
@@ -71,10 +73,10 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public void createCard() throws IOException {
+    public void createCard() {
         Card card = CreditCardBuilder.init()
-                .withCardNumber()
-                .withPin()
+                .withCardNumber(CreditCardNumberGenerator.cardNumber())
+                .withPin(PinGenerator.pin())
                 .build();
 
         this.saveCard(card);
