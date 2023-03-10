@@ -10,12 +10,12 @@ public class AccountSessionService {
 
     private final AccountService accountService;
 
-    private AccountSessionService(String cardNumber, CardService cardService) {
-        this.accountService = new AccountServiceImpl(cardNumber, cardService);
+    private AccountSessionService(CardService cardService) {
+        this.accountService = new AccountServiceImpl(cardService);
     }
 
-    public static AccountSessionService accountSession(String cardNumber, CardService cardService) {
-        return new AccountSessionService(cardNumber, cardService);
+    public static AccountSessionService accountSession(CardService cardService) {
+        return new AccountSessionService(cardService);
     }
 
     /**
@@ -44,5 +44,9 @@ public class AccountSessionService {
      */
     public void addIncome() {
         accountService.addIncome();
+    }
+
+    public boolean login() {
+        return accountService.login();
     }
 }

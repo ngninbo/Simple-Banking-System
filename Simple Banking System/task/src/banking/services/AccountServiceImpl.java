@@ -4,13 +4,12 @@ import banking.util.CreditCardNumberValidator;
 import banking.util.PropertiesLoader;
 import banking.util.RequestUserTo;
 
-import java.io.IOException;
 import java.util.Properties;
 import java.util.function.Predicate;
 
 public class AccountServiceImpl implements AccountService {
 
-    private final String cardNumber;
+    private String cardNumber;
     private final CardService cardService;
 
     private final Properties properties;
@@ -22,10 +21,16 @@ public class AccountServiceImpl implements AccountService {
     private final Predicate<String> isNotPresent;
     private final Predicate<String> isValid = CreditCardNumberValidator::isValid;
 
-    public AccountServiceImpl(String cardNumber, CardService cardService) {
-        this.cardNumber = cardNumber;
+    public AccountServiceImpl(CardService cardService) {
         this.cardService = cardService;
         this.isNotPresent = cardService.cardNumberPresentChecker().negate();
+    }
+
+    @Override
+    public boolean login() {
+        this.cardNumber = RequestUserTo.inputCardInformation(properties.getProperty("USER_CARD_NUMBER_INPUT_REQUEST_MSG"));
+        String pin = RequestUserTo.inputCardInformation(properties.getProperty("USER_PIN_INPUT_REQUEST_MSG"));
+        return cardService.isCardWithCardNumberAndPinAvailable(cardNumber, pin);
     }
 
 
@@ -37,7 +42,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public void doTransfer() throws IOException {
+    public void doTransfer() {
         String targetCardNumber;
         System.out.println(properties.getProperty("TRANSFER_TEXT"));
         targetCardNumber = RequestUserTo.inputTargetCardNumber();

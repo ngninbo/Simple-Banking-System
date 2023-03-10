@@ -5,7 +5,6 @@ import banking.generator.PinGenerator;
 import banking.models.Card;
 import banking.util.PropertiesLoader;
 
-import java.io.IOException;
 import java.util.Properties;
 
 
@@ -40,7 +39,7 @@ public class CreditCardBuilder {
         return this;
     }
 
-    public CreditCardBuilder withPin() throws IOException {
+    public CreditCardBuilder withPin() {
         this.pin = PinGenerator.generatePin(
                 Integer.parseInt(properties.getProperty("MIN_PIN")),
                 Integer.parseInt(properties.getProperty("MAX_PIN")));

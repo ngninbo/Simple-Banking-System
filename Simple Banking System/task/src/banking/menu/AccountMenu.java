@@ -2,30 +2,23 @@ package banking.menu;
 
 import banking.services.AccountSessionService;
 import banking.services.CardService;
-import banking.util.RequestUserTo;
 
 import java.io.IOException;
-import java.util.function.BiFunction;
 
 public class AccountMenu extends Menu {
 
-    private final BiFunction<String, String, Boolean> cardInfoValidation;
-    private AccountSessionService account;
+    private final AccountSessionService account;
 
     public AccountMenu(CardService cardService) {
         super(cardService);
-        cardInfoValidation = cardService::isCardWithCardNumberAndPinAvailable;
+        account = AccountSessionService.accountSession(cardService);
     }
 
     @Override
     public void process() throws IOException {
-        String cardNumber = RequestUserTo.inputCardInformation(properties.getProperty("USER_CARD_NUMBER_INPUT_REQUEST_MSG"));
-        String pin = RequestUserTo.inputCardInformation(properties.getProperty("USER_PIN_INPUT_REQUEST_MSG"));
-
-        if (!cardInfoValidation.apply(cardNumber, pin)) {
+        if (!account.login()) {
             printWrongCardNumberOrPinErrorMessage();
         } else {
-            account = AccountSessionService.accountSession(cardNumber, cardService);
             printLoginState(properties.getProperty("IN_TXT"));
             super.process();
         }
