@@ -15,9 +15,9 @@ public class AccountMenu extends Menu {
     @Override
     public void process() throws IOException {
         if (!account.login()) {
-            printWrongCardNumberOrPinErrorMessage();
+            System.out.println(properties.getProperty("WRONG_CARD_NUMBER_OR_PIN_ERROR_MSG") + "\n");
         } else {
-            printLoginState(Logged.IN);
+            printLoginState(LoginState.LOGGED_IN);
             super.process();
         }
     }
@@ -39,7 +39,7 @@ public class AccountMenu extends Menu {
                 account.closeAccount();
                 return false;
             case LOG_OUT:
-                printLoginState(Logged.OUT);
+                printLoginState(LoginState.LOGGED_OUT);
                 return false;
             case EXIT:
                 exit();
@@ -61,19 +61,12 @@ public class AccountMenu extends Menu {
     }
 
     /**
-     * Informed user that the input card number or PIN is wrong when validation failed
-     */
-    private void printWrongCardNumberOrPinErrorMessage() {
-        System.out.println(properties.getProperty("WRONG_CARD_NUMBER_OR_PIN_ERROR_MSG") + "\n");
-    }
-
-    /**
      * Print message depending on the login state
      *
-     * @param loginState {@link Logged} login state
+     * @param loginState {@link LoginState} login state
      */
-    private void printLoginState(Logged loginState) {
-        String state = String.format(properties.getProperty("LOG_IN_STATUS_MSG"), loginState.toLowerCase());
+    private void printLoginState(LoginState loginState) {
+        String state = String.format(properties.getProperty("LOG_IN_STATUS_MSG"), loginState.getName());
         System.out.printf("%s\n\n", state);
     }
 
