@@ -1,7 +1,6 @@
 package banking.menu;
 
 import banking.services.AccountSessionService;
-import banking.services.CardService;
 
 import java.io.IOException;
 
@@ -9,9 +8,8 @@ public class AccountMenu extends Menu {
 
     private final AccountSessionService account;
 
-    public AccountMenu(CardService cardService) {
-        super(cardService);
-        account = AccountSessionService.accountSession(cardService);
+    public AccountMenu(AccountSessionService account) {
+        this.account = account;
     }
 
     @Override
@@ -58,7 +56,7 @@ public class AccountMenu extends Menu {
     }
 
     @Override
-    public int displayMenu() {
+    protected int displayMenu() {
         return displayOptions(MenuItem.account());
     }
 
@@ -77,5 +75,11 @@ public class AccountMenu extends Menu {
     private void printLoginState(String loginState) {
         String state = String.format(properties.getProperty("LOG_IN_STATUS_MSG"), loginState);
         System.out.printf("%s\n\n", state);
+    }
+
+    @Override
+    protected void exit() {
+        super.exit();
+        System.exit(0);
     }
 }

@@ -9,4 +9,5 @@ public interface AccountService {
     void doTransfer() throws IOException;
     void printAccountBalance();
     void closeAccount();
+    void createAccount();
 }

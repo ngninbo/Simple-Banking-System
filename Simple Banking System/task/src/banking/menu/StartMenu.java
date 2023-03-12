@@ -1,13 +1,15 @@
 package banking.menu;
 
-import banking.services.CardService;
+import banking.services.AccountSessionService;
 
 import java.io.IOException;
 
 public class StartMenu extends Menu {
 
-    public StartMenu(CardService cardService) {
-        super(cardService);
+    private final AccountSessionService account;
+
+    public StartMenu(AccountSessionService account) {
+        this.account = account;
     }
 
     @Override
@@ -15,10 +17,10 @@ public class StartMenu extends Menu {
 
         switch (menuItem) {
             case CREATE_AN_ACCOUNT:
-                cardService.createCard();
+                account.createAccount();
                 break;
             case LOG_INTO_ACCOUNT:
-                new AccountMenu(cardService).process();
+                new AccountMenu(account).process();
                 break;
             case EXIT:
                 exit();

@@ -2,7 +2,12 @@ package banking.services;
 
 import banking.models.Card;
 import banking.repository.CardRepository;
+import banking.util.CreditCardNumberValidator;
+
 import java.util.Optional;
+import java.util.function.Predicate;
+
+import static banking.services.TransferResult.*;
 
 public class CardServiceImpl implements CardService {
 
@@ -24,13 +29,13 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public long readBalanceByCardNumber(String cardNumber) {
-        return repository.findCardByNumberAndReturnBalance(cardNumber);
+    public long findBalanceByCardNumber(String cardNumber) {
+        return repository.findBalanceByCardNumber(cardNumber);
     }
 
     @Override
-    public void updateBalanceByCardNumber(String cardNumber, long income) {
-        repository.updateCardByNumber(cardNumber, income);
+    public void addIncome(String cardNumber, long income) {
+        repository.addIncome(cardNumber, income);
     }
 
     @Override
@@ -39,8 +44,20 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public void updateBalanceByCardNumber(String cardNumber, String targetCardNumber, long amount) {
-        repository.updateCardsByNumbers(cardNumber, targetCardNumber, amount);
+    public TransferResult transfer(long amount, String from, String to) {
+        final Predicate<String> isValid = CreditCardNumberValidator::isValid;
+        if (isValid.negate().test(to)) {
+            return CARD_NUMBER_ERROR;
+        } else if (to.equals(from)) {
+            return SAME_ACCOUNT_ERROR;
+        } else if (isCardNumberPresent().negate().test(to)) {
+            return CARD_NOT_EXISTS_ERROR;
+        } else if (amount > findBalanceByCardNumber(from)) {
+            return NOT_ENOUGH_MONEY_ERROR;
+        } else {
+            repository.transfer(amount, from, to);
+            return SUCCESS;
+        }
     }
 
 

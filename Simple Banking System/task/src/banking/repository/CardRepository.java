@@ -32,7 +32,7 @@ public class CardRepository {
         createTableCard();
     }
 
-    public static CardRepository init(String filename) {
+    public static CardRepository of(String filename) {
         return new CardRepository(filename);
     }
 
@@ -107,7 +107,7 @@ public class CardRepository {
      * @param number credit card number
      * @return account balance
      */
-    public long findCardByNumberAndReturnBalance(String number) {
+    public long findBalanceByCardNumber(String number) {
 
         long balance = 0L;
 
@@ -131,7 +131,7 @@ public class CardRepository {
      * @param cardNumber credit card number
      * @param income     amount of money to be added to current account balance
      */
-    public void updateCardByNumber(String cardNumber, long income) {
+    public void addIncome(String cardNumber, long income) {
 
         try (Connection connection = dataSource.getConnection()) {
 
@@ -152,29 +152,26 @@ public class CardRepository {
 
     /**
      * Update balance of card by given number increasingly in target and decreasingly in current account
-     *
-     * @param currentCardNumber card number of current account
-     * @param targetCardNumber  card number of target account
-     * @param amount            amount of money to be added/subtracted to/from target/current account balance
+     * @param amount    amount of money to be transferred from current account to target
+     * @param from      card number of current account
+     * @param to        card number of target account
      */
-    public void updateCardsByNumbers(String currentCardNumber, String targetCardNumber, long amount) {
+    public void transfer(long amount, String from, String to) {
 
         try (Connection connection = dataSource.getConnection()) {
 
             // Disable auto commit mode
             connection.setAutoCommit(false);
             // connection.setSavepoint();
-            statement = connection.prepareStatement(
-                    properties.getProperty("UPDATE_CARD_INCREASING_BALANCE_WHERE_NUMBER"));
+            statement = connection.prepareStatement(properties.getProperty("UPDATE_CARD_INCREASING_BALANCE_WHERE_NUMBER"));
             statement.setLong(1, amount);
-            statement.setString(2, targetCardNumber);
+            statement.setString(2, to);
             statement.executeUpdate();
 
             // connection.setSavepoint();
-            statement = connection.prepareStatement(
-                    properties.getProperty("UPDATE_CARD_DECREASING_BALANCE_WHERE_NUMBER"));
+            statement = connection.prepareStatement(properties.getProperty("UPDATE_CARD_DECREASING_BALANCE_WHERE_NUMBER"));
             statement.setLong(1, amount);
-            statement.setString(2, currentCardNumber);
+            statement.setString(2, from);
             statement.executeUpdate();
 
             connection.commit();
@@ -182,7 +179,6 @@ public class CardRepository {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
     }
 
     /**
@@ -213,10 +209,10 @@ public class CardRepository {
         Optional<Card> card = findCardByNumber(cardNumber);
 
         return card.isEmpty() ? Optional.empty() :
-                (isPinValid(actualPin, card.get().getPin()) ? card : Optional.empty());
+                (assertEquals(actualPin, card.get().getPin()) ? card : Optional.empty());
     }
 
-    private boolean isPinValid(String actualPin, String exceptedPin) {
+    private boolean assertEquals(String actualPin, String exceptedPin) {
         return actualPin.equals(exceptedPin);
     }
 }

@@ -16,13 +16,13 @@ public interface CardService {
 
     Optional<Card> findCardByNumber(String cardNumber);
 
-    long readBalanceByCardNumber(String cardNumber);
+    long findBalanceByCardNumber(String cardNumber);
 
-    void updateBalanceByCardNumber(String cardNumber, long income);
+    void addIncome(String cardNumber, long income);
 
     void deleteCardByNumber(String cardNumber);
 
-    void updateBalanceByCardNumber(String cardNumber, String targetCardNumber, long amount);
+    TransferResult transfer(long amount, String from, String to);
 
     boolean isCardWithNumberAndPinPresent(String cardNumber, String pin);
 
@@ -34,7 +34,7 @@ public interface CardService {
         return CreditCardNumberValidator.isValid(cardNumber) && isCardWithNumberAndPinPresent(cardNumber, pin);
     }
 
-    default Predicate<String> cardNumberPresentChecker() {
+    default Predicate<String> isCardNumberPresent() {
         return this::isCardWithNumberPresent;
     }
 

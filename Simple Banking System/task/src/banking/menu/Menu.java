@@ -1,6 +1,5 @@
 package banking.menu;
 
-import banking.services.CardService;
 import banking.util.PropertiesLoader;
 
 import java.io.IOException;
@@ -17,15 +16,10 @@ public abstract class Menu {
     protected abstract int displayMenu();
 
     protected Properties properties;
-    protected final CardService cardService;
     protected MenuItem item = MenuItem.UNKNOWN;
 
     {
        properties = PropertiesLoader.getInstance().messages();
-    }
-
-    public Menu(CardService cardService) {
-        this.cardService = cardService;
     }
 
     public void process() throws IOException {
@@ -43,7 +37,7 @@ public abstract class Menu {
      * @param items List of {@link MenuItem}
      * @return selected option
      */
-    public int displayOptions(List<MenuItem> items) {
+    protected int displayOptions(List<MenuItem> items) {
         // Print menu
         int selectedOption;
         IntStream.range(0, items.size())
@@ -62,7 +56,6 @@ public abstract class Menu {
      */
     protected void printByeMessage() {
         System.out.println(properties.getProperty("BYE_MSG"));
-        System.exit(0);
     }
 
     protected MenuItem getMenuItem(int choice, List<MenuItem> items) {

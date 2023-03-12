@@ -1,11 +1,9 @@
 package banking.services;
 
-import banking.util.CreditCardNumberValidator;
 import banking.util.PropertiesLoader;
 import banking.util.RequestUserTo;
 
 import java.util.Properties;
-import java.util.function.Predicate;
 
 public class AccountServiceImpl implements AccountService {
 
@@ -18,12 +16,8 @@ public class AccountServiceImpl implements AccountService {
         properties = PropertiesLoader.getInstance().messages();
     }
 
-    private final Predicate<String> isNotPresent;
-    private final Predicate<String> isValid = CreditCardNumberValidator::isValid;
-
     public AccountServiceImpl(CardService cardService) {
         this.cardService = cardService;
-        this.isNotPresent = cardService.cardNumberPresentChecker().negate();
     }
 
     @Override
@@ -37,31 +31,17 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public void addIncome() {
         long income = RequestUserTo.inputAmount(properties.getProperty("INCOME_INPUT_REQUEST_MSG"));
-        cardService.updateBalanceByCardNumber(cardNumber, income);
+        cardService.addIncome(cardNumber, income);
         log("INCOME_ADDED_TEXT");
     }
 
     @Override
     public void doTransfer() {
-        String targetCardNumber;
         System.out.println(properties.getProperty("TRANSFER_TEXT"));
-        targetCardNumber = RequestUserTo.inputTargetCardNumber();
-
-        if (isValid.negate().test(targetCardNumber)) {
-            log("CARD_NUMBER_ERROR_MSG");
-        } else if (targetCardNumber.equals(cardNumber)) {
-            log("SAME_ACCOUNT_ERROR_MSG");
-        } else if (isNotPresent.test(targetCardNumber)) {
-            log("CARD_NOT_EXISTS_ERROR_MSG");
-        } else {
-            long amount = RequestUserTo.inputAmount(properties.getProperty("AMOUNT_TO_TRANSFER_INPUT_REQUEST_MSG"));
-            if (amount > cardService.readBalanceByCardNumber(cardNumber)) {
-                log("NOT_ENOUGH_MONEY_ERROR_MSG");
-            } else {
-                cardService.updateBalanceByCardNumber(cardNumber, targetCardNumber, amount);
-                log("SUCCESS_MSG");
-            }
-        }
+        String targetCardNumber = RequestUserTo.inputTargetCardNumber();
+        long amount = RequestUserTo.inputAmount(properties.getProperty("AMOUNT_TO_TRANSFER_INPUT_REQUEST_MSG"));
+        final TransferResult result = cardService.transfer(amount, cardNumber, targetCardNumber);
+        log(result.name().concat("_MSG"));
     }
 
     private void log(String propertyKey) {
@@ -70,12 +50,17 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public void printAccountBalance() {
-        System.out.printf(properties.getProperty("ACCOUNT_BALANCE_TEXT") + "\n\n", cardService.readBalanceByCardNumber(cardNumber));
+        System.out.printf(properties.getProperty("ACCOUNT_BALANCE_TEXT") + "\n\n", cardService.findBalanceByCardNumber(cardNumber));
     }
 
     @Override
     public void closeAccount() {
         cardService.deleteCardByNumber(cardNumber);
         log("ACCOUNT_CLOSED_TEXT");
+    }
+
+    @Override
+    public void createAccount() {
+        cardService.createCard();
     }
 }

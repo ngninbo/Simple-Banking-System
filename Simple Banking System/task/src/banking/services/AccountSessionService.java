@@ -49,4 +49,8 @@ public class AccountSessionService {
     public boolean login() {
         return accountService.login();
     }
+
+    public void createAccount() {
+        accountService.createAccount();
+    }
 }

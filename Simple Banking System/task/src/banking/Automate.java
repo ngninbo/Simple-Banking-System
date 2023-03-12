@@ -1,7 +1,7 @@
 package banking;
 
+import banking.services.AccountSessionService;
 import banking.menu.StartMenu;
-import banking.services.CardService;
 
 import java.io.IOException;
 
@@ -14,17 +14,17 @@ import java.io.IOException;
  */
 public class Automate extends Thread {
 
-    private final CardService cardService;
+    private final AccountSessionService account;
 
-    public Automate(CardService cardService) {
-        this.cardService = cardService;
+    public Automate(AccountSessionService account) {
+        this.account = account;
     }
 
     @Override
     public void run() {
 
         try {
-            new StartMenu(cardService).process();
+            new StartMenu(account).process();
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(-1);
