@@ -1,6 +1,6 @@
 package banking.repository;
 
-public enum UpdateStategy {
+public enum UpdateStrategy {
 
     INCREASING,
     DECREASING

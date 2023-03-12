@@ -9,8 +9,8 @@ import java.sql.*;
 import java.util.Optional;
 import java.util.Properties;
 
-import static banking.repository.UpdateStategy.DECREASING;
-import static banking.repository.UpdateStategy.INCREASING;
+import static banking.repository.UpdateStrategy.DECREASING;
+import static banking.repository.UpdateStrategy.INCREASING;
 
 /**
  * This class provides the CRUD methods
@@ -210,8 +210,8 @@ public class CardRepository {
 
     private void executeUpdate(long amount, String cardNumber,
                                Connection connection,
-                               UpdateStategy updateStategy) throws SQLException {
-        final String query = String.join("_", "UPDATE_CARD", updateStategy.name(), "BALANCE_WHERE_NUMBER");
+                               UpdateStrategy updateStrategy) throws SQLException {
+        final String query = String.join("_", "UPDATE_CARD", updateStrategy.name(), "BALANCE_WHERE_NUMBER");
         statement = connection.prepareStatement(properties.getProperty(query));
         statement.setLong(1, amount);
         statement.setString(2, cardNumber);
