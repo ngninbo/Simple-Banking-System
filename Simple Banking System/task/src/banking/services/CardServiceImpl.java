@@ -22,7 +22,6 @@ public class CardServiceImpl implements CardService {
 
     @Override
     public Optional<Card> findCardByNumber(String cardNumber) {
-
         return repository.findCardByNumber(cardNumber);
     }
 
@@ -42,13 +41,11 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public TransferResult transfer(long amount, String from, String to) {
-        if (to.equals(from)) {
-            return SAME_ACCOUNT_ERROR;
-        } else if (amount > findBalanceByCardNumber(from)) {
+    public TransferResult transfer(long amount, String source, String target) {
+        if (amount > findBalanceByCardNumber(source)) {
             return NOT_ENOUGH_MONEY_ERROR;
         } else {
-            repository.transfer(amount, from, to);
+            repository.transfer(amount, source, target);
             return SUCCESS;
         }
     }

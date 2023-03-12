@@ -5,10 +5,8 @@ import banking.util.PropertiesLoader;
 import banking.util.RequestUserTo;
 
 import java.util.Properties;
-import java.util.function.Predicate;
 
-import static banking.services.TransferResult.CARD_NOT_EXISTS_ERROR;
-import static banking.services.TransferResult.CARD_NUMBER_ERROR;
+import static banking.services.TransferResult.*;
 
 public class AccountServiceImpl implements AccountService {
 
@@ -50,11 +48,12 @@ public class AccountServiceImpl implements AccountService {
     }
 
     private TransferResult getTransferResult(String targetCardNumber) {
-        final Predicate<String> isValid = CreditCardNumberValidator::isValid;
         TransferResult result;
-        if (isValid.negate().test(targetCardNumber)) {
+        if (targetCardNumber.equals(cardNumber)) {
+            return SAME_ACCOUNT_ERROR;
+        } else if (!CreditCardNumberValidator.isValid(targetCardNumber)) {
             result = CARD_NUMBER_ERROR;
-        } else if (cardService.isCardNumberPresent().negate().test(targetCardNumber)) {
+        } else if (!cardService.isCardWithNumberPresent(targetCardNumber)) {
             result = CARD_NOT_EXISTS_ERROR;
         } else {
             long amount = RequestUserTo.inputAmount(properties.getProperty("AMOUNT_TO_TRANSFER_INPUT_REQUEST_MSG"));

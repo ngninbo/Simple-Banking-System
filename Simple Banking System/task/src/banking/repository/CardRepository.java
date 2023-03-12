@@ -151,20 +151,20 @@ public class CardRepository {
     /**
      * Update balance of card by given number increasingly in target and decreasingly in current account
      * @param amount    amount of money to be transferred from current account to target
-     * @param from      card number of current account
-     * @param to       card number of target account
+     * @param source    card number of current account
+     * @param target    card number of target account
      */
-    public void transfer(long amount, String from, String to) {
+    public void transfer(long amount, String source, String target) {
 
         try (Connection connection = dataSource.getConnection()) {
 
             // Disable auto commit mode
             connection.setAutoCommit(false);
             // connection.setSavepoint();
-            executeUpdate(amount, to, connection, INCREASING);
+            executeUpdate(amount, target, connection, INCREASING);
 
             // connection.setSavepoint();
-            executeUpdate(amount, from, connection, DECREASING);
+            executeUpdate(amount, source, connection, DECREASING);
 
             connection.commit();
 
@@ -193,19 +193,14 @@ public class CardRepository {
      * Find card by given number and pin
      *
      * @param cardNumber card number
-     * @param actualPin  PIN entered by user
+     * @param pin  PIN entered by user
      * @return Optional Card object
      */
-    public Optional<Card> findCardByNumberAndPin(String cardNumber, String actualPin) {
+    public Optional<Card> findCardByNumberAndPin(String cardNumber, String pin) {
 
         Optional<Card> card = findCardByNumber(cardNumber);
 
-        return card.isEmpty() ? Optional.empty() :
-                (assertEquals(actualPin, card.get().getPin()) ? card : Optional.empty());
-    }
-
-    private boolean assertEquals(String actualPin, String exceptedPin) {
-        return actualPin.equals(exceptedPin);
+        return card.isEmpty() ? Optional.empty() : (pin.equals(card.get().getPin()) ? card : Optional.empty());
     }
 
     private void executeUpdate(long amount, String cardNumber,

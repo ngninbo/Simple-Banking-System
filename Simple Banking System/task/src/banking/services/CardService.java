@@ -8,7 +8,6 @@ import banking.util.CreditCardNumberValidator;
 import banking.util.PropertiesLoader;
 
 import java.util.Optional;
-import java.util.function.Predicate;
 
 public interface CardService {
 
@@ -32,10 +31,6 @@ public interface CardService {
 
     default boolean isCardWithCardNumberAndPinAvailable(String cardNumber, String pin) {
         return CreditCardNumberValidator.isValid(cardNumber) && isCardWithNumberAndPinPresent(cardNumber, pin);
-    }
-
-    default Predicate<String> isCardNumberPresent() {
-        return this::isCardWithNumberPresent;
     }
 
     default void createCard() {
