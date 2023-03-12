@@ -9,6 +9,9 @@ import java.sql.*;
 import java.util.Optional;
 import java.util.Properties;
 
+import static banking.repository.UpdateStategy.DECREASING;
+import static banking.repository.UpdateStategy.INCREASING;
+
 /**
  * This class provides the CRUD methods
  *
@@ -137,12 +140,7 @@ public class CardRepository {
 
             // Disable auto commit mode
             connection.setAutoCommit(false);
-
-            statement = connection.prepareStatement(properties.getProperty("UPDATE_CARD_INCREASING_BALANCE_WHERE_NUMBER"));
-            statement.setLong(1, income);
-            statement.setString(2, cardNumber);
-
-            statement.executeUpdate();
+            executeUpdate(income, cardNumber, connection, INCREASING);
             connection.commit();
 
         } catch (SQLException e) {
@@ -154,7 +152,7 @@ public class CardRepository {
      * Update balance of card by given number increasingly in target and decreasingly in current account
      * @param amount    amount of money to be transferred from current account to target
      * @param from      card number of current account
-     * @param to        card number of target account
+     * @param to       card number of target account
      */
     public void transfer(long amount, String from, String to) {
 
@@ -163,16 +161,10 @@ public class CardRepository {
             // Disable auto commit mode
             connection.setAutoCommit(false);
             // connection.setSavepoint();
-            statement = connection.prepareStatement(properties.getProperty("UPDATE_CARD_INCREASING_BALANCE_WHERE_NUMBER"));
-            statement.setLong(1, amount);
-            statement.setString(2, to);
-            statement.executeUpdate();
+            executeUpdate(amount, to, connection, INCREASING);
 
             // connection.setSavepoint();
-            statement = connection.prepareStatement(properties.getProperty("UPDATE_CARD_DECREASING_BALANCE_WHERE_NUMBER"));
-            statement.setLong(1, amount);
-            statement.setString(2, from);
-            statement.executeUpdate();
+            executeUpdate(amount, from, connection, DECREASING);
 
             connection.commit();
 
@@ -214,5 +206,15 @@ public class CardRepository {
 
     private boolean assertEquals(String actualPin, String exceptedPin) {
         return actualPin.equals(exceptedPin);
+    }
+
+    private void executeUpdate(long amount, String cardNumber,
+                               Connection connection,
+                               UpdateStategy updateStategy) throws SQLException {
+        final String query = String.join("_", "UPDATE_CARD", updateStategy.name(), "BALANCE_WHERE_NUMBER");
+        statement = connection.prepareStatement(properties.getProperty(query));
+        statement.setLong(1, amount);
+        statement.setString(2, cardNumber);
+        statement.executeUpdate();
     }
 }
