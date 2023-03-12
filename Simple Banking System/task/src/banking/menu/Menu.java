@@ -62,6 +62,7 @@ public abstract class Menu {
 
         final int size = items.size();
         if (choice >= size) {
+            System.out.println(properties.getProperty("UNKNOWN_COMMAND_TXT") + "\n");
             return MenuItem.UNKNOWN;
         }
 
