@@ -17,7 +17,7 @@ public class AccountMenu extends Menu {
         if (!account.login()) {
             printWrongCardNumberOrPinErrorMessage();
         } else {
-            printLoginState(properties.getProperty("IN_TXT"));
+            printLoginState(Logged.IN);
             super.process();
         }
     }
@@ -39,7 +39,7 @@ public class AccountMenu extends Menu {
                 account.closeAccount();
                 return false;
             case LOG_OUT:
-                printLoginState(properties.getProperty("OUT_TXT"));
+                printLoginState(Logged.OUT);
                 return false;
             case EXIT:
                 exit();
@@ -70,10 +70,10 @@ public class AccountMenu extends Menu {
     /**
      * Print message depending on the login state
      *
-     * @param loginState login state
+     * @param loginState {@link Logged} login state
      */
-    private void printLoginState(String loginState) {
-        String state = String.format(properties.getProperty("LOG_IN_STATUS_MSG"), loginState);
+    private void printLoginState(Logged loginState) {
+        String state = String.format(properties.getProperty("LOG_IN_STATUS_MSG"), loginState.toLowerCase());
         System.out.printf("%s\n\n", state);
     }
 
