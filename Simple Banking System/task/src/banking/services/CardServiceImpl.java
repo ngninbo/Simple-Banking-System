@@ -2,10 +2,8 @@ package banking.services;
 
 import banking.models.Card;
 import banking.repository.CardRepository;
-import banking.util.CreditCardNumberValidator;
 
 import java.util.Optional;
-import java.util.function.Predicate;
 
 import static banking.services.TransferResult.*;
 
@@ -45,13 +43,8 @@ public class CardServiceImpl implements CardService {
 
     @Override
     public TransferResult transfer(long amount, String from, String to) {
-        final Predicate<String> isValid = CreditCardNumberValidator::isValid;
-        if (isValid.negate().test(to)) {
-            return CARD_NUMBER_ERROR;
-        } else if (to.equals(from)) {
+        if (to.equals(from)) {
             return SAME_ACCOUNT_ERROR;
-        } else if (isCardNumberPresent().negate().test(to)) {
-            return CARD_NOT_EXISTS_ERROR;
         } else if (amount > findBalanceByCardNumber(from)) {
             return NOT_ENOUGH_MONEY_ERROR;
         } else {

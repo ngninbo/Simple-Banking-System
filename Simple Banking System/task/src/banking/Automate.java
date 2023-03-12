@@ -12,7 +12,7 @@ import java.io.IOException;
  *
  * @author Beauclair Dongmo Ngnintedem
  */
-public class Automate extends Thread {
+public class Automate implements Runnable {
 
     private final AccountSessionService account;
 
