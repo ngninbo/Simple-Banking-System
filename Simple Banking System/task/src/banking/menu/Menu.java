@@ -61,7 +61,7 @@ public abstract class Menu {
     protected MenuItem getMenuItem(int choice, List<MenuItem> items) {
 
         final int size = items.size();
-        if (choice >= size) {
+        if (choice >= size || choice < 0) {
             System.out.println(properties.getProperty("UNKNOWN_COMMAND_TXT") + "\n");
             return MenuItem.UNKNOWN;
         }

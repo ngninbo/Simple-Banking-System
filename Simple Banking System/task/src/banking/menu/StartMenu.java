@@ -3,9 +3,11 @@ package banking.menu;
 import banking.services.AccountSessionService;
 
 import java.io.IOException;
+import java.util.List;
 
 public class StartMenu extends Menu {
 
+    private static final List<MenuItem> START_MENU_ITEMS = MenuItem.start();
     private final AccountSessionService account;
 
     public StartMenu(AccountSessionService account) {
@@ -33,11 +35,11 @@ public class StartMenu extends Menu {
 
     @Override
     protected MenuItem getMenuItem(int choice) {
-        return getMenuItem(choice, MenuItem.start());
+        return getMenuItem(choice, START_MENU_ITEMS);
     }
 
     @Override
     protected int displayMenu() {
-        return displayOptions(MenuItem.start());
+        return displayOptions(START_MENU_ITEMS);
     }
 }

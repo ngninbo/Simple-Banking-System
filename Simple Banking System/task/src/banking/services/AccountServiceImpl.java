@@ -2,13 +2,13 @@ package banking.services;
 
 import banking.util.CreditCardNumberValidator;
 import banking.util.PropertiesLoader;
-import banking.util.RequestUserTo;
+import banking.util.UserInput;
 
 import java.util.Properties;
 
 import static banking.services.TransferResult.*;
 
-public class AccountServiceImpl implements AccountService {
+public class AccountServiceImpl implements AccountService, UserInput {
 
     private String cardNumber;
     private final CardService cardService;
@@ -25,15 +25,15 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public boolean login() {
-        this.cardNumber = RequestUserTo.inputCardInformation(properties.getProperty("USER_CARD_NUMBER_INPUT_REQUEST_MSG"));
-        String pin = RequestUserTo.inputCardInformation(properties.getProperty("USER_PIN_INPUT_REQUEST_MSG"));
+        this.cardNumber = request(properties.getProperty("USER_CARD_NUMBER_INPUT_REQUEST_MSG"));
+        String pin = request(properties.getProperty("USER_PIN_INPUT_REQUEST_MSG"));
         return cardService.isCardWithCardNumberAndPinAvailable(cardNumber, pin);
     }
 
 
     @Override
     public void addIncome() {
-        long income = RequestUserTo.inputAmount(properties.getProperty("INCOME_INPUT_REQUEST_MSG"));
+        long income = inputAmount(properties.getProperty("INCOME_INPUT_REQUEST_MSG"));
         cardService.addIncome(cardNumber, income);
         log("INCOME_ADDED_TEXT");
     }
@@ -41,29 +41,10 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public void doTransfer() {
         System.out.println(properties.getProperty("TRANSFER_TEXT"));
-        String targetCardNumber = RequestUserTo.inputTargetCardNumber();
+        String targetCardNumber = request(properties.getProperty("TARGET_CARD_NUMBER_INPUT_REQUEST_MSG"));
         TransferResult result;
         result = getTransferResult(targetCardNumber);
         log(result.name().concat("_MSG"));
-    }
-
-    private TransferResult getTransferResult(String targetCardNumber) {
-        TransferResult result;
-        if (targetCardNumber.equals(cardNumber)) {
-            return SAME_ACCOUNT_ERROR;
-        } else if (!CreditCardNumberValidator.isValid(targetCardNumber)) {
-            result = CARD_NUMBER_ERROR;
-        } else if (!cardService.isCardWithNumberPresent(targetCardNumber)) {
-            result = CARD_NOT_EXISTS_ERROR;
-        } else {
-            long amount = RequestUserTo.inputAmount(properties.getProperty("AMOUNT_TO_TRANSFER_INPUT_REQUEST_MSG"));
-            result = cardService.transfer(amount, cardNumber, targetCardNumber);
-        }
-        return result;
-    }
-
-    private void log(String propertyKey) {
-        System.out.println(properties.getProperty(propertyKey) + "\n");
     }
 
     @Override
@@ -80,5 +61,24 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public void createAccount() {
         cardService.createCard();
+    }
+
+    private TransferResult getTransferResult(String targetCardNumber) {
+        TransferResult result;
+        if (targetCardNumber.equals(cardNumber)) {
+            return SAME_ACCOUNT_ERROR;
+        } else if (!CreditCardNumberValidator.isValid(targetCardNumber)) {
+            result = CARD_NUMBER_ERROR;
+        } else if (!cardService.isCardWithNumberPresent(targetCardNumber)) {
+            result = CARD_NOT_EXISTS_ERROR;
+        } else {
+            long amount = inputAmount(properties.getProperty("AMOUNT_TO_TRANSFER_INPUT_REQUEST_MSG"));
+            result = cardService.transfer(amount, cardNumber, targetCardNumber);
+        }
+        return result;
+    }
+
+    private void log(String propertyKey) {
+        System.out.println(properties.getProperty(propertyKey) + "\n");
     }
 }
