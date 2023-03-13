@@ -17,31 +17,23 @@ public class PropertiesLoader {
     }
 
     public Properties statements() {
-        try {
-            return loadProperties("statements.properties");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return new Properties();
+        return getProperties("statements.properties");
     }
 
     public Properties messages() {
-        try {
-            return loadProperties("logs.properties");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return new Properties();
+        return getProperties("messages.properties");
     }
 
     public Properties properties() {
+        return getProperties("application.properties");
+    }
+
+    public Properties getProperties(String propertiesFilename) {
         try {
-            return loadProperties("application.properties");
+            return loadProperties(propertiesFilename);
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         return new Properties();
     }
 

@@ -677,9 +677,6 @@ files:
         }
     }
   learner_created: false
-- name: card.s3db
-  visible: true
-  learner_created: true
 - name: src/banking/services/CardService.java
   visible: true
   learner_created: true
@@ -869,6 +866,174 @@ files:
     }
 
   learner_created: true
+- name: src/banking/util/CreditCardNumberValidator.java
+  visible: true
+  learner_created: true
+- name: src/banking/generator/NumberGenerator.java
+  visible: true
+  learner_created: true
+- name: src/banking/generator/CreditCardNumberGenerator.java
+  visible: true
+  learner_created: true
+- name: src/banking/generator/PinGenerator.java
+  visible: true
+  learner_created: true
+- name: src/banking/builder/AutomateBuilder.java
+  visible: true
+  learner_created: true
+- name: src/banking/builder/CreditCardBuilder.java
+  visible: true
+  text: |
+    package banking;
+
+    import java.util.ArrayList;
+    import java.util.List;
+    import java.util.concurrent.ThreadLocalRandom;
+
+    /**
+     * This class implements the card generation and validation logic.
+     * @author Beauclair Dongmo Ngnintedem
+     */
+    public class CreditCardGenerator {
+
+        private int accountIdentifier;
+        private String pin;
+        private String creditCardNumber;
+        private static final int bankIdentificationNumber = 400000;
+        private Card card;
+        List<Integer> usedAccountIdentifiers;
+        private String filename;
+
+        CreditCardGenerator() {
+            generateCreditCardNumber();
+            generatePin();
+        }
+
+        public CreditCardGenerator(String filename) {
+            this.filename = filename;
+        }
+
+        /**
+         * Generate a PIN number
+         */
+        public void generatePin() {
+            this.pin = String.format("%04d" , (int) ThreadLocalRandom.current().nextLong(0, 9999));
+        }
+
+        /**
+         * Generate account identifier
+         */
+        public void generateAccountIdentifier() {
+
+            accountIdentifier = (int) ThreadLocalRandom.current().nextLong(100000000, 999999999);
+
+            if (!usedAccountIdentifiers.contains(accountIdentifier)) {
+                usedAccountIdentifiers.add(accountIdentifier);
+            } else {
+                generateAccountIdentifier();
+            }
+        }
+
+        /**
+         * Generate card number and validate it
+         */
+        public void generateCreditCardNumber() {
+            this.usedAccountIdentifiers = new ArrayList<>();
+            StringBuilder tmpCardNumber = new StringBuilder();
+            generateAccountIdentifier();
+            tmpCardNumber.append(bankIdentificationNumber).append(accountIdentifier);
+            this.creditCardNumber = tmpCardNumber.toString();
+            validateCreditCardNumber();
+        }
+
+        /**
+         * Validate generated card number while finding the check sum
+         */
+        public void validateCreditCardNumber() {
+            int checkSum = 0;
+            while (!checkCreditCardNumber(this.creditCardNumber + checkSum)) {
+                checkSum += 1;
+            }
+            this.creditCardNumber = this.creditCardNumber + checkSum;
+        }
+
+
+        /**
+         * Validate the given card number with the Luhn algorithm
+         * @param creditCardNumber Credit card number
+         * @return isValid Whether the given number passed the Luhn algorithm
+         */
+        public boolean checkCreditCardNumber(String creditCardNumber) {
+
+            int checkSum = Integer.parseInt(String.valueOf(creditCardNumber.charAt(creditCardNumber.length() - 1)));
+            boolean isValid;
+
+            for (int i = 0; i < creditCardNumber.length() - 1; i++) {
+                int digit = Integer.parseInt(String.valueOf(creditCardNumber.charAt(i)));
+
+                if (i % 2 == 0) {
+                    digit = digit * 2;
+
+                    if (digit > 9) {
+                        digit = digit - 9;
+                    }
+                }
+                checkSum += digit;
+            }
+
+            isValid = checkSum % 10 == 0;
+
+            return isValid;
+        }
+
+        /**
+         * @param number card number
+         * @param pin PIN
+         * @return Whether the given card number is Luhn conform and a card with given parameters exists or not
+         */
+        public boolean validateCard(String number, String pin) {
+            boolean isValid = false;
+            CardRepository repository = new CardRepository(filename);
+
+            if (checkCreditCardNumber(number)) {
+                card = repository.readCardByNumber(number);
+                if (card.getPin().equals(pin)) {
+                    isValid = true;
+                }
+            }
+            return isValid;
+        }
+
+        public Card getCard() {
+            card = new Card(creditCardNumber, pin);
+            return card;
+        }
+    }
+  learner_created: true
+- name: src/banking/util/PropertiesLoader.java
+  visible: true
+  learner_created: true
+- name: src/main/resources/application.properties
+  visible: true
+  learner_created: true
+- name: src/main/resources/statements.properties
+  visible: true
+  learner_created: true
+- name: src/banking/menu/StartMenu.java
+  visible: true
+  learner_created: true
+- name: src/banking/menu/MenuItem.java
+  visible: true
+  learner_created: true
+- name: src/banking/menu/Menu.java
+  visible: true
+  learner_created: true
+- name: src/banking/menu/AccountMenu.java
+  visible: true
+  learner_created: true
+- name: src/banking/builder/CardFactory.java
+  visible: true
+  learner_created: true
 - name: src/banking/Automate.java
   visible: true
   text: |
@@ -1052,181 +1217,22 @@ files:
 - name: src/banking/services/AccountSessionService.java
   visible: true
   learner_created: true
-- name: src/banking/util/CreditCardNumberValidator.java
+- name: src/banking/services/TransferResult.java
   visible: true
   learner_created: true
-- name: src/banking/generator/NumberGenerator.java
+- name: card.s3db
   visible: true
   learner_created: true
-- name: src/banking/generator/CreditCardNumberGenerator.java
+- name: src/banking/repository/UpdateStrategy.java
   visible: true
   learner_created: true
-- name: src/banking/generator/PinGenerator.java
+- name: src/banking/menu/LoginState.java
   visible: true
   learner_created: true
-- name: src/banking/builder/AutomateBuilder.java
+- name: src/banking/util/UserInput.java
   visible: true
   learner_created: true
-- name: src/banking/builder/CreditCardBuilder.java
-  visible: true
-  text: |
-    package banking;
-
-    import java.util.ArrayList;
-    import java.util.List;
-    import java.util.concurrent.ThreadLocalRandom;
-
-    /**
-     * This class implements the card generation and validation logic.
-     * @author Beauclair Dongmo Ngnintedem
-     */
-    public class CreditCardGenerator {
-
-        private int accountIdentifier;
-        private String pin;
-        private String creditCardNumber;
-        private static final int bankIdentificationNumber = 400000;
-        private Card card;
-        List<Integer> usedAccountIdentifiers;
-        private String filename;
-
-        CreditCardGenerator() {
-            generateCreditCardNumber();
-            generatePin();
-        }
-
-        public CreditCardGenerator(String filename) {
-            this.filename = filename;
-        }
-
-        /**
-         * Generate a PIN number
-         */
-        public void generatePin() {
-            this.pin = String.format("%04d" , (int) ThreadLocalRandom.current().nextLong(0, 9999));
-        }
-
-        /**
-         * Generate account identifier
-         */
-        public void generateAccountIdentifier() {
-
-            accountIdentifier = (int) ThreadLocalRandom.current().nextLong(100000000, 999999999);
-
-            if (!usedAccountIdentifiers.contains(accountIdentifier)) {
-                usedAccountIdentifiers.add(accountIdentifier);
-            } else {
-                generateAccountIdentifier();
-            }
-        }
-
-        /**
-         * Generate card number and validate it
-         */
-        public void generateCreditCardNumber() {
-            this.usedAccountIdentifiers = new ArrayList<>();
-            StringBuilder tmpCardNumber = new StringBuilder();
-            generateAccountIdentifier();
-            tmpCardNumber.append(bankIdentificationNumber).append(accountIdentifier);
-            this.creditCardNumber = tmpCardNumber.toString();
-            validateCreditCardNumber();
-        }
-
-        /**
-         * Validate generated card number while finding the check sum
-         */
-        public void validateCreditCardNumber() {
-            int checkSum = 0;
-            while (!checkCreditCardNumber(this.creditCardNumber + checkSum)) {
-                checkSum += 1;
-            }
-            this.creditCardNumber = this.creditCardNumber + checkSum;
-        }
-
-
-        /**
-         * Validate the given card number with the Luhn algorithm
-         * @param creditCardNumber Credit card number
-         * @return isValid Whether the given number passed the Luhn algorithm
-         */
-        public boolean checkCreditCardNumber(String creditCardNumber) {
-
-            int checkSum = Integer.parseInt(String.valueOf(creditCardNumber.charAt(creditCardNumber.length() - 1)));
-            boolean isValid;
-
-            for (int i = 0; i < creditCardNumber.length() - 1; i++) {
-                int digit = Integer.parseInt(String.valueOf(creditCardNumber.charAt(i)));
-
-                if (i % 2 == 0) {
-                    digit = digit * 2;
-
-                    if (digit > 9) {
-                        digit = digit - 9;
-                    }
-                }
-                checkSum += digit;
-            }
-
-            isValid = checkSum % 10 == 0;
-
-            return isValid;
-        }
-
-        /**
-         * @param number card number
-         * @param pin PIN
-         * @return Whether the given card number is Luhn conform and a card with given parameters exists or not
-         */
-        public boolean validateCard(String number, String pin) {
-            boolean isValid = false;
-            CardRepository repository = new CardRepository(filename);
-
-            if (checkCreditCardNumber(number)) {
-                card = repository.readCardByNumber(number);
-                if (card.getPin().equals(pin)) {
-                    isValid = true;
-                }
-            }
-            return isValid;
-        }
-
-        public Card getCard() {
-            card = new Card(creditCardNumber, pin);
-            return card;
-        }
-    }
-  learner_created: true
-- name: src/banking/util/RequestUserTo.java
-  visible: true
-  learner_created: true
-- name: src/banking/util/PropertiesLoader.java
-  visible: true
-  learner_created: true
-- name: src/main/resources/application.properties
-  visible: true
-  learner_created: true
-- name: src/main/resources/logs.properties
-  visible: true
-  learner_created: true
-- name: src/main/resources/statements.properties
-  visible: true
-  learner_created: true
-- name: src/banking/command/Command.java
-  visible: true
-  learner_created: true
-- name: src/banking/menu/StartMenu.java
-  visible: true
-  learner_created: true
-- name: src/banking/menu/MenuItem.java
-  visible: true
-  learner_created: true
-- name: src/banking/menu/Menu.java
-  visible: true
-  learner_created: true
-- name: src/banking/menu/AccountMenu.java
-  visible: true
-  learner_created: true
-- name: src/banking/builder/CardFactory.java
+- name: src/main/resources/messages.properties
   visible: true
   learner_created: true
 feedback_link: https://hyperskill.org/learn/step/8428#comment

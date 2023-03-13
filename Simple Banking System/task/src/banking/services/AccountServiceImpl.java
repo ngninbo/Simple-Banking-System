@@ -2,13 +2,14 @@ package banking.services;
 
 import banking.util.CreditCardNumberValidator;
 import banking.util.PropertiesLoader;
-import banking.util.UserInput;
 
 import java.util.Properties;
 
 import static banking.services.TransferResult.*;
+import static banking.util.UserInput.inputAmount;
+import static banking.util.UserInput.request;
 
-public class AccountServiceImpl implements AccountService, UserInput {
+public class AccountServiceImpl implements AccountService {
 
     private String cardNumber;
     private final CardService cardService;
@@ -42,8 +43,7 @@ public class AccountServiceImpl implements AccountService, UserInput {
     public void doTransfer() {
         System.out.println(properties.getProperty("TRANSFER_TEXT"));
         String targetCardNumber = request(properties.getProperty("TARGET_CARD_NUMBER_INPUT_REQUEST_MSG"));
-        TransferResult result;
-        result = getTransferResult(targetCardNumber);
+        TransferResult result = getTransferResult(targetCardNumber);
         log(result.name().concat("_MSG"));
     }
 
