@@ -13,7 +13,12 @@ public abstract class Menu {
     protected abstract boolean process(MenuItem menuItem) throws IOException;
 
     protected abstract MenuItem getMenuItem(int choice);
-    protected abstract int displayMenu();
+
+    /**
+     * Display menu and read user input from standard input
+     * @return {@link Integer} number corresponding to chosen menu item
+     */
+    protected abstract int display();
 
     protected Properties properties;
     protected MenuItem item = MenuItem.UNKNOWN;
@@ -22,9 +27,13 @@ public abstract class Menu {
        properties = PropertiesLoader.getInstance().messages();
     }
 
-    public void process() throws IOException {
+    /**
+     * Show menu and process user input.
+     * @throws IOException e.g. when reading/loading data failed
+     */
+    public void show() throws IOException {
         while (process(item)) {
-            int choice = displayMenu();
+            int choice = display();
             item = getMenuItem(choice);
         }
     }
@@ -34,10 +43,11 @@ public abstract class Menu {
     }
 
     /**
+     * Display menu options and read user input using {@link Scanner}
      * @param items List of {@link MenuItem}
-     * @return selected option
+     * @return {@link Integer} number of selected menu item
      */
-    protected int displayOptions(List<MenuItem> items) {
+    protected int display(List<MenuItem> items) {
         // Print menu
         int selectedOption;
         IntStream.range(0, items.size())
@@ -58,19 +68,25 @@ public abstract class Menu {
         System.out.println(properties.getProperty("BYE_MSG"));
     }
 
-    protected MenuItem getMenuItem(int choice, List<MenuItem> items) {
+    /**
+     * Get menu item by given index in the given list of items
+     * @param index {@link Integer}
+     * @param items List of {@link MenuItem}
+     * @return {@link MenuItem}
+     */
+    protected MenuItem getMenuItem(int index, List<MenuItem> items) {
 
         final int size = items.size();
-        if (choice >= size || choice < 0) {
+        if (index >= size || index < 0) {
             System.out.println(properties.getProperty("UNKNOWN_COMMAND_TXT") + "\n");
             return MenuItem.UNKNOWN;
         }
 
-        if (choice == 0) {
+        if (index == 0) {
             return MenuItem.EXIT;
         }
 
-        return items.get(choice - 1);
+        return items.get(index - 1);
     }
 
 }

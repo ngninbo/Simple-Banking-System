@@ -5,6 +5,12 @@ import banking.services.AccountSessionService;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * This class represents the initial menu of the simple banking system
+ * It provided several options for creating an account, logging into an account.
+ * It extends {@link Menu}
+ * @author Beauclair Dongmo Ngnintedem
+ */
 public class StartMenu extends Menu {
 
     private static final List<MenuItem> START_MENU_ITEMS = MenuItem.start();
@@ -22,7 +28,7 @@ public class StartMenu extends Menu {
                 account.createAccount();
                 break;
             case LOG_INTO_ACCOUNT:
-                new AccountMenu(account).process();
+                new AccountMenu(account).show();
                 break;
             case EXIT:
                 exit();
@@ -39,7 +45,7 @@ public class StartMenu extends Menu {
     }
 
     @Override
-    protected int displayMenu() {
-        return displayOptions(START_MENU_ITEMS);
+    protected int display() {
+        return display(START_MENU_ITEMS);
     }
 }

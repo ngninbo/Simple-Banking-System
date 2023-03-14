@@ -5,6 +5,12 @@ import banking.services.AccountSessionService;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * This class represents the menu displayed after log into account in the simple banking system.
+ * It provided several methods for performing some transaction on an account.
+ * It extends {@link Menu}
+ * @author Beauclair Dongmo Ngnintedem
+ */
 public class AccountMenu extends Menu {
 
     private static final List<MenuItem> ACCOUNT_MENU_ITEMS = MenuItem.account();
@@ -15,12 +21,12 @@ public class AccountMenu extends Menu {
     }
 
     @Override
-    public void process() throws IOException {
+    public void show() throws IOException {
         if (!account.login()) {
             System.out.println(properties.getProperty("WRONG_CARD_NUMBER_OR_PIN_ERROR_MSG") + "\n");
         } else {
             printLoginState(LoginState.LOGGED_IN);
-            super.process();
+            super.show();
         }
     }
 
@@ -58,8 +64,8 @@ public class AccountMenu extends Menu {
     }
 
     @Override
-    protected int displayMenu() {
-        return displayOptions(ACCOUNT_MENU_ITEMS);
+    protected int display() {
+        return display(ACCOUNT_MENU_ITEMS);
     }
 
     /**
