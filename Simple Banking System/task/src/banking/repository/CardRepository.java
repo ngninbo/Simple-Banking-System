@@ -87,21 +87,21 @@ public class CardRepository {
      */
     public Optional<Card> findCardByNumber(String cardNumber) {
 
-        Card card = null;
         try (Connection connection = dataSource.getConnection()) {
             statement = connection.prepareStatement(properties.getProperty("SELECT_FROM_CARD_WHERE_NUMBER"));
             statement.setString(1, cardNumber);
             ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                card = CardFactory.createCard(resultSet.getString("number"),
+            if (resultSet.first()) {
+                Card card = CardFactory.createCard(resultSet.getString("number"),
                         resultSet.getString("pin"), resultSet.getInt("balance"));
+                return Optional.of(card);
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return Optional.ofNullable(card);
+        return Optional.empty();
     }
 
     /**
@@ -112,20 +112,18 @@ public class CardRepository {
      */
     public long findBalanceByCardNumber(String number) {
 
-        long balance = 0L;
-
         try (Connection connection = dataSource.getConnection()) {
             statement = connection.prepareStatement(properties.getProperty("SELECT_BALANCE_FROM_CARD_WHERE_NUMBER"));
             statement.setString(1, number);
             ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                balance = resultSet.getLong("balance");
+            if (resultSet.first()) {
+                return resultSet.getLong("balance");
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return balance;
+        return 0;
     }
 
     /**
@@ -200,7 +198,7 @@ public class CardRepository {
 
         Optional<Card> card = findCardByNumber(cardNumber);
 
-        return card.isEmpty() ? Optional.empty() : (pin.equals(card.get().getPin()) ? card : Optional.empty());
+        return card.isPresent() ? (pin.equals(card.get().getPin()) ? card : Optional.empty()) : Optional.empty();
     }
 
     private void executeUpdate(long amount, String cardNumber,

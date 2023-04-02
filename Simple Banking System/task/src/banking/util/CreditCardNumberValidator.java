@@ -1,5 +1,7 @@
 package banking.util;
 
+import java.math.BigInteger;
+
 public interface CreditCardNumberValidator {
 
     /**
@@ -25,6 +27,6 @@ public interface CreditCardNumberValidator {
             checkSum += digit;
         }
 
-        return checkSum % 10 == 0;
+        return checkSum % BigInteger.TEN.intValue() == 0;
     }
 }

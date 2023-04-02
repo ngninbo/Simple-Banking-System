@@ -2,7 +2,6 @@ package banking.util;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Objects;
 import java.util.Properties;
 
 public class PropertiesLoader {
@@ -29,21 +28,19 @@ public class PropertiesLoader {
     }
 
     public Properties getProperties(String propertiesFilename) {
-        try {
-            return loadProperties(propertiesFilename);
+        return loadProperties(propertiesFilename);
+    }
+
+    private static Properties loadProperties(String resourceFileName) {
+        ClassLoader loader = Thread.currentThread().getContextClassLoader();
+        Properties configuration = new Properties();
+
+        try (InputStream inputStream = loader.getResourceAsStream(resourceFileName)) {
+            configuration.load(inputStream);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return new Properties();
-    }
 
-    private static Properties loadProperties(String resourceFileName) throws IOException {
-        ClassLoader loader = Thread.currentThread().getContextClassLoader();
-        Properties configuration = new Properties();
-        InputStream inputStream = loader
-                .getResourceAsStream(resourceFileName);
-        configuration.load(inputStream);
-        Objects.requireNonNull(inputStream).close();
         return configuration;
     }
 }
