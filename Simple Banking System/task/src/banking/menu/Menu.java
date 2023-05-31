@@ -45,18 +45,12 @@ public abstract class Menu {
      */
     protected int display(List<MenuItem> items) {
         // Print menu
-        int selectedOption;
         IntStream.range(0, items.size())
-                .forEach(i -> System.out.println(messageFactory.get(
-                        "item.display",
-                        String.valueOf(MenuItem.EXIT.equals(items.get(i)) ? 0 : i + 1),
-                        messageFactory.from(items.get(i).getText()))));
+                .mapToObj(i -> format(items.get(i), i))
+                .forEach(System.out::println);
 
         // Prompt user to select an option
-        Scanner scanner = new Scanner(System.in);
-        selectedOption = scanner.nextInt();
-
-        return selectedOption;
+        return new Scanner(System.in).nextInt();
     }
 
     /**
@@ -85,6 +79,13 @@ public abstract class Menu {
         }
 
         return items.get(index - 1);
+    }
+
+    private String format(MenuItem menuItem, int index) {
+        return messageFactory.get(
+                "item.display",
+                String.valueOf(MenuItem.EXIT.equals(menuItem) ? 0 : index + 1),
+                messageFactory.from(menuItem.getText()));
     }
 
 }
