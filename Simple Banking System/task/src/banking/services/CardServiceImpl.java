@@ -5,8 +5,6 @@ import banking.repository.CardRepository;
 
 import java.util.Optional;
 
-import static banking.services.TransferResult.*;
-
 public class CardServiceImpl implements CardService {
 
     private final CardRepository repository;
@@ -27,7 +25,7 @@ public class CardServiceImpl implements CardService {
 
     @Override
     public long findBalanceByCardNumber(String cardNumber) {
-        return repository.findBalanceByCardNumber(cardNumber);
+        return repository.findCardByNumber(cardNumber).map(Card::getBalance).orElse(0L);
     }
 
     @Override
@@ -41,12 +39,7 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public TransferResult transfer(long amount, String source, String target) {
-        if (amount > findBalanceByCardNumber(source)) {
-            return NOT_ENOUGH_MONEY_ERROR;
-        } else {
-            repository.transfer(amount, source, target);
-            return SUCCESS;
-        }
+    public void transfer(long amount, String source, String target) {
+        repository.transfer(amount, source, target);
     }
 }

@@ -1,27 +1,21 @@
 package banking.services;
 
 import banking.builder.CreditCardBuilder;
-import banking.domain.MessageFactory;
 import banking.generator.CreditCardNumberGenerator;
 import banking.generator.PinGenerator;
 import banking.models.Card;
-import banking.util.CreditCardNumberValidator;
 
 import java.util.function.BiPredicate;
 
-import static banking.services.TransferResult.*;
 import static banking.util.UserInput.inputAmount;
 import static banking.util.UserInput.request;
 
-public class AccountServiceImpl implements AccountService {
+public class AccountExecutorService extends TransferExecutor implements AccountService {
 
     private String cardNumber;
-    private final CardService cardService;
-    private final MessageFactory messageFactory = new MessageFactory();
-    private final CreditCardNumberValidator validator = new CreditCardNumberValidator();
 
-    public AccountServiceImpl(CardService cardService) {
-        this.cardService = cardService;
+    public AccountExecutorService(CardService cardService) {
+        super(cardService);
     }
 
     @Override
@@ -43,7 +37,7 @@ public class AccountServiceImpl implements AccountService {
     public void doTransfer() {
         System.out.println(messageFactory.from("TRANSFER_TEXT"));
         String targetCardNumber = request(messageFactory.from("TARGET_CARD_NUMBER_INPUT_REQUEST_MSG"));
-        TransferResult result = getTransferResult(targetCardNumber);
+        TransferResult result = doTransfer(cardNumber, targetCardNumber);
         log(result.name().concat("_MSG"));
     }
 
@@ -74,21 +68,6 @@ public class AccountServiceImpl implements AccountService {
         return (cardNumber, pin) -> cardService.findCardByNumber(cardNumber)
                 .map(card -> (pin.equals(card.getPin())))
                 .orElse(Boolean.FALSE);
-    }
-
-    private TransferResult getTransferResult(String targetCardNumber) {
-        TransferResult result;
-        if (targetCardNumber.equals(cardNumber)) {
-            return SAME_ACCOUNT_ERROR;
-        } else if (!validator.setCreditCardNumber(targetCardNumber).validate()) {
-            result = CARD_NUMBER_ERROR;
-        } else if (cardService.findCardByNumber(targetCardNumber).isEmpty()) {
-            result = CARD_NOT_EXISTS_ERROR;
-        } else {
-            long amount = inputAmount(messageFactory.from("AMOUNT_TO_TRANSFER_INPUT_REQUEST_MSG"));
-            result = cardService.transfer(amount, cardNumber, targetCardNumber);
-        }
-        return result;
     }
 
     private void log(String propertyKey) {

@@ -16,5 +16,5 @@ public interface CardService {
 
     void deleteCardByNumber(String cardNumber);
 
-    TransferResult transfer(long amount, String from, String to);
+    void transfer(long amount, String from, String to);
 }

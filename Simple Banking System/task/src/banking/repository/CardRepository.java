@@ -102,16 +102,6 @@ public class CardRepository {
     }
 
     /**
-     * Find card by given number and return balance value
-     *
-     * @param number credit card number
-     * @return account balance
-     */
-    public long findBalanceByCardNumber(String number) {
-        return findCardByNumber(number).map(Card::getBalance).orElse(0L);
-    }
-
-    /**
      * Update balance of card by given number increasingly
      *
      * @param cardNumber credit card number
