@@ -1,16 +1,17 @@
 package banking.menu;
 
-import banking.util.PropertiesLoader;
+import banking.domain.MessageFactory;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Properties;
 import java.util.Scanner;
 import java.util.stream.IntStream;
 
 public abstract class Menu {
 
     protected abstract boolean process(MenuItem menuItem) throws IOException;
+
+    protected MessageFactory messageFactory = new MessageFactory();
 
     protected abstract MenuItem getMenuItem(int choice);
 
@@ -20,12 +21,7 @@ public abstract class Menu {
      */
     protected abstract int display();
 
-    protected Properties properties;
     protected MenuItem item = MenuItem.UNKNOWN;
-
-    {
-       properties = PropertiesLoader.getInstance().messages();
-    }
 
     /**
      * Show menu and process user input.
@@ -51,8 +47,10 @@ public abstract class Menu {
         // Print menu
         int selectedOption;
         IntStream.range(0, items.size())
-                .forEach(i -> System.out.printf("%d. %s\n",
-                        MenuItem.EXIT.equals(items.get(i)) ? 0 : i + 1, items.get(i).capitalize()));
+                .forEach(i -> System.out.println(messageFactory.get(
+                        "item.display",
+                        String.valueOf(MenuItem.EXIT.equals(items.get(i)) ? 0 : i + 1),
+                        messageFactory.from(items.get(i).getText()))));
 
         // Prompt user to select an option
         Scanner scanner = new Scanner(System.in);
@@ -65,7 +63,7 @@ public abstract class Menu {
      * Say 'Bye' and end the program
      */
     protected void printByeMessage() {
-        System.out.println(properties.getProperty("BYE_MSG"));
+        System.out.println(messageFactory.from("BYE_MSG"));
     }
 
     /**
@@ -78,7 +76,7 @@ public abstract class Menu {
 
         final int size = items.size();
         if (index >= size || index < 0) {
-            System.out.println(properties.getProperty("UNKNOWN_COMMAND_TXT") + "\n");
+            System.out.println(messageFactory.from("UNKNOWN_COMMAND_TXT"));
             return MenuItem.UNKNOWN;
         }
 

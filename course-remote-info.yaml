@@ -3,7 +3,7 @@ hyperskill_project:
   ide_files: https://stepik.org/media/attachments/lesson/295560/additional_files.json
   is_template_based: false
   use_ide: true
-update_date: Mon, 13 Mar 2023 20:00:28 UTC
+update_date: Sun, 14 May 2023 14:24:49 UTC
 stages:
 - id: 515
   step: 8425
@@ -19,14 +19,14 @@ stages:
   is_completed: true
 topics:
   0:
-  - title: Write, compile, and run
-    theory_id: 3739
-  - title: JVM, JRE, and JDK
-    theory_id: 3499
   - title: Units of information
     theory_id: 6865
+  - title: Write, compile, and run
+    theory_id: 3739
   - title: IDE
     theory_id: 10996
+  - title: JVM, JRE, and JDK
+    theory_id: 3499
   - title: Introduction to Operating systems
     theory_id: 9704
   - title: Command line overview
@@ -189,21 +189,21 @@ topics:
     theory_id: 8611
   - title: Logic and comparison expressions
     theory_id: 8619
-  - title: The NULL value
-    theory_id: 7907
   - title: Basic INSERT statement
     theory_id: 9059
   - title: Introduction to SQLite
     theory_id: 12165
+  - title: The NULL value
+    theory_id: 7907
   - title: Basic UPDATE statement
     theory_id: 9067
   - title: JDBC Statements
     theory_id: 9955
   3:
-  - title: Results ordering
-    theory_id: 8627
   - title: Basic DELETE statement
     theory_id: 9075
+  - title: Results ordering
+    theory_id: 8627
   - title: JDBC Prepared Statements
     theory_id: 11014
   - title: JDBC Transactions

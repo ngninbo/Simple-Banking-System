@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class StartMenu extends Menu {
 
-    private static final List<MenuItem> START_MENU_ITEMS = MenuItem.start();
+    private static final List<MenuItem> OPTIONS = MenuItem.START_OPTIONS;
     private final AccountSessionService account;
 
     public StartMenu(AccountSessionService account) {
@@ -26,6 +26,7 @@ public class StartMenu extends Menu {
         switch (menuItem) {
             case CREATE_AN_ACCOUNT:
                 account.createAccount();
+                System.out.println();
                 break;
             case LOG_INTO_ACCOUNT:
                 new AccountMenu(account).show();
@@ -41,11 +42,11 @@ public class StartMenu extends Menu {
 
     @Override
     protected MenuItem getMenuItem(int choice) {
-        return getMenuItem(choice, START_MENU_ITEMS);
+        return getMenuItem(choice, OPTIONS);
     }
 
     @Override
     protected int display() {
-        return display(START_MENU_ITEMS);
+        return display(OPTIONS);
     }
 }

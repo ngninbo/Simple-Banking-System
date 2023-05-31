@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class AccountMenu extends Menu {
 
-    private static final List<MenuItem> ACCOUNT_MENU_ITEMS = MenuItem.account();
+    private static final List<MenuItem> ACCOUNT_MENU_ITEMS = MenuItem.ACCOUNT_OPTIONS;
     private final AccountSessionService account;
 
     public AccountMenu(AccountSessionService account) {
@@ -23,7 +23,7 @@ public class AccountMenu extends Menu {
     @Override
     public void show() throws IOException {
         if (!account.login()) {
-            System.out.println(properties.getProperty("WRONG_CARD_NUMBER_OR_PIN_ERROR_MSG") + "\n");
+            System.out.println(messageFactory.from("WRONG_CARD_NUMBER_OR_PIN_ERROR_MSG").concat("\n"));
         } else {
             printLoginState(LoginState.LOGGED_IN);
             super.show();
@@ -44,10 +44,12 @@ public class AccountMenu extends Menu {
                 account.doTransfer();
                 break;
             case CLOSE_ACCOUNT:
-                account.closeAccount();
+                account.close();
+                System.out.println();
                 return false;
             case LOG_OUT:
                 printLoginState(LoginState.LOGGED_OUT);
+                System.out.println();
                 return false;
             case EXIT:
                 exit();
@@ -55,6 +57,7 @@ public class AccountMenu extends Menu {
             default:
         }
 
+        System.out.println();
         return true;
     }
 
@@ -74,8 +77,7 @@ public class AccountMenu extends Menu {
      * @param loginState {@link LoginState} login state
      */
     private void printLoginState(LoginState loginState) {
-        String state = String.format(properties.getProperty("LOG_IN_STATUS_MSG"), loginState.getName());
-        System.out.printf("%s\n\n", state);
+        System.out.println(messageFactory.from(loginState.getLabel()));
     }
 
     @Override

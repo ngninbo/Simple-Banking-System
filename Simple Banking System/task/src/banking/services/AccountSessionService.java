@@ -28,7 +28,7 @@ public class AccountSessionService {
     /**
      * Delete account from database. The user will be automatically logged out
      */
-    public void closeAccount() {
+    public void close() {
         accountService.closeAccount();
     }
 

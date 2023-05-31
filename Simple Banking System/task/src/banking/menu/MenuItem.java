@@ -14,20 +14,11 @@ public enum MenuItem {
     EXIT,
     UNKNOWN;
 
-    public static List<MenuItem> start() {
-        return List.of(CREATE_AN_ACCOUNT, LOG_INTO_ACCOUNT, EXIT);
-    }
+    public static List<MenuItem> START_OPTIONS = List.of(CREATE_AN_ACCOUNT, LOG_INTO_ACCOUNT, EXIT);
 
-    public static List<MenuItem> account() {
-        return List.of(BALANCE, ADD_INCOME, DO_TRANSFER, CLOSE_ACCOUNT, LOG_OUT, EXIT);
-    }
+    public static List<MenuItem> ACCOUNT_OPTIONS = List.of(BALANCE, ADD_INCOME, DO_TRANSFER, CLOSE_ACCOUNT, LOG_OUT, EXIT);
 
-    public String capitalize() {
-        String name = replaceUnderscore();
-        return name.charAt(0) + name.substring(1).toLowerCase();
-    }
-
-    private String replaceUnderscore() {
-        return name().replace("_", " ");
+    public String getText() {
+        return "MENU_ITEM_".concat(name());
     }
 }

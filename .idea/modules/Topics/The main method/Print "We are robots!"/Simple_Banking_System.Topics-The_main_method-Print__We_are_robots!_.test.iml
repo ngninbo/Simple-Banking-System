@@ -7,7 +7,7 @@
     <content url="file://$MODULE_DIR$/../../../../../Topics/The main method/Print &quot;We are robots!&quot;/test" />
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="Simple Banking System.Simple_Banking_System.Topics-The_main_method-Print__We_are_robots!_.main" />
+    <orderEntry type="module" module-name="Simple_Banking_System.Topics-The_main_method-Print__We_are_robots!_.main" />
     <orderEntry type="module" module-name="Simple_Banking_System.util.main" />
     <orderEntry type="module" module-name="Simple_Banking_System.util.test" production-on-test="" />
     <orderEntry type="library" name="Gradle: org.xerial:sqlite-jdbc:3.36.0" level="project" />

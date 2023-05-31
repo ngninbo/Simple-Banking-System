@@ -1,13 +1,14 @@
 package banking.services;
 
 import banking.builder.CreditCardBuilder;
+import banking.domain.MessageFactory;
 import banking.generator.CreditCardNumberGenerator;
 import banking.generator.PinGenerator;
 import banking.models.Card;
 import banking.util.CreditCardNumberValidator;
-import banking.util.PropertiesLoader;
 
 import java.util.Optional;
+import java.util.function.BiPredicate;
 
 public interface CardService {
 
@@ -29,8 +30,8 @@ public interface CardService {
         return findCardByNumber(targetCardNumber).isPresent();
     }
 
-    default boolean isCardWithCardNumberAndPinAvailable(String cardNumber, String pin) {
-        return CreditCardNumberValidator.isValid(cardNumber) && isCardWithNumberAndPinPresent(cardNumber, pin);
+    default BiPredicate<String, String> isCardWithCardNumberAndPinAvailable() {
+        return (cardNumber, pin) -> CreditCardNumberValidator.isValid(cardNumber) && isCardWithNumberAndPinPresent(cardNumber, pin);
     }
 
     default void createCard() {
@@ -41,10 +42,7 @@ public interface CardService {
 
         this.saveCard(card);
 
-        System.out.printf(
-                PropertiesLoader.getInstance().messages()
-                        .getProperty("CARD_INFORMATION_AFTER_CREATION_TEXT") +"%n%n",
-                card.getCreditCardNumber(),
-                card.getPin());
+        MessageFactory messageFactory = new MessageFactory();
+        System.out.println(messageFactory.get("CARD_INFORMATION_AFTER_CREATION_TEXT", card.getCreditCardNumber(), card.getPin()));
     }
 }
