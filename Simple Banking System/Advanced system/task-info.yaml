@@ -1010,9 +1010,6 @@ files:
         }
     }
   learner_created: true
-- name: src/banking/util/PropertiesLoader.java
-  visible: true
-  learner_created: true
 - name: src/main/resources/application.properties
   visible: true
   learner_created: true
@@ -1245,6 +1242,9 @@ files:
   visible: true
   learner_created: true
 - name: src/banking/domain/Formatter.java
+  visible: true
+  learner_created: true
+- name: src/banking/util/PropertiesLoader.java
   visible: true
   learner_created: true
 feedback_link: https://hyperskill.org/learn/step/8428#comment
