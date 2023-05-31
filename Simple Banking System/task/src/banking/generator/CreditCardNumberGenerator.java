@@ -24,8 +24,8 @@ public class CreditCardNumberGenerator extends NumberGenerator {
     }
 
     public static String cardNumber() {
-        return generateCardNumber(Long.parseLong(MESSAGE_FACTORY.from("BANK_IDENTIFICATION_NUMBER")),
-                Long.parseLong(MESSAGE_FACTORY.from("MIN_ACCOUNT_IDENTIFIER")),
-                Long.parseLong(MESSAGE_FACTORY.from("MAX_ACCOUNT_IDENTIFIER")));
+        return generateCardNumber(Long.parseLong(PROPERTIES.getProperty("BANK_IDENTIFICATION_NUMBER")),
+                Long.parseLong(PROPERTIES.getProperty("MIN_ACCOUNT_IDENTIFIER")),
+                Long.parseLong(PROPERTIES.getProperty("MAX_ACCOUNT_IDENTIFIER")));
     }
 }
