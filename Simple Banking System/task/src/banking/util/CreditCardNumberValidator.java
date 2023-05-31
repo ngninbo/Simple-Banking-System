@@ -1,32 +1,36 @@
 package banking.util;
 
 import java.math.BigInteger;
+import java.util.stream.IntStream;
 
-public interface CreditCardNumberValidator {
+public class CreditCardNumberValidator {
 
-    /**
-     * Validate the given card number with the Luhn algorithm
-     *
-     * @param creditCardNumber {@link String} Credit card number
-     * @return {@link Boolean} Whether the given number passed the Luhn algorithm or not
-     */
-    static boolean isValid(String creditCardNumber) {
+    private String creditCardNumber;
+
+    public CreditCardNumberValidator setCreditCardNumber(String creditCardNumber) {
+        this.creditCardNumber = creditCardNumber;
+        return this;
+    }
+
+    public boolean validate() {
 
         int checkSum = Integer.parseInt(String.valueOf(creditCardNumber.charAt(creditCardNumber.length() - 1)));
-
-        for (int i = 0; i < creditCardNumber.length() - 1; i++) {
-            int digit = Integer.parseInt(String.valueOf(creditCardNumber.charAt(i)));
-
-            if (i % 2 == 0) {
-                digit = digit * 2;
-
-                if (digit > 9) {
-                    digit = digit - 9;
-                }
-            }
-            checkSum += digit;
-        }
+        checkSum += IntStream.iterate(creditCardNumber.length() - 2, i -> i >= 0, i -> i - 1)
+                .map(i -> check(i, Integer.parseInt(String.valueOf(creditCardNumber.charAt(i)))))
+                .sum();
 
         return checkSum % BigInteger.TEN.intValue() == 0;
+    }
+
+    private int check(int index, int digit) {
+        if (index % 2 == 0) {
+            digit = digit * 2;
+
+            if (digit > 9) {
+                digit = digit - 9;
+            }
+        }
+
+        return digit;
     }
 }

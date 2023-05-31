@@ -49,10 +49,4 @@ public class CardServiceImpl implements CardService {
             return SUCCESS;
         }
     }
-
-
-    @Override
-    public boolean isCardWithNumberAndPinPresent(String cardNumber, String pin) {
-        return repository.findCardByNumberAndPin(cardNumber, pin).isPresent();
-    }
 }

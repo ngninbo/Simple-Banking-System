@@ -171,17 +171,6 @@ public class CardRepository {
         }
     }
 
-    /**
-     * Find card by given number and pin
-     *
-     * @param cardNumber card number
-     * @param pin  PIN entered by user
-     * @return Optional Card object
-     */
-    public Optional<Card> findCardByNumberAndPin(String cardNumber, String pin) {
-        return findCardByNumber(cardNumber).map(card -> (pin.equals(card.getPin()) ? card : null));
-    }
-
     private void executeUpdate(long amount, String cardNumber,
                                Connection connection,
                                UpdateStrategy updateStrategy) throws SQLException {

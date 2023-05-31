@@ -2,11 +2,9 @@ package banking.generator;
 
 import banking.util.CreditCardNumberValidator;
 
-import java.util.function.Predicate;
-
 public class CreditCardNumberGenerator extends NumberGenerator {
 
-    private static final Predicate<String> isValid = CreditCardNumberValidator::isValid;
+    private static final CreditCardNumberValidator validator = new CreditCardNumberValidator();
 
     public static String generateCardNumber(long bankIdentificationNumber,
                                             long minAccountIdentifier,
@@ -16,11 +14,15 @@ public class CreditCardNumberGenerator extends NumberGenerator {
 
         int checkSum = 0;
 
-        while (isValid.negate().test(cardNumber + checkSum)) {
+        while (!isValid(cardNumber + checkSum)) {
             checkSum += 1;
         }
 
         return cardNumber + checkSum;
+    }
+
+    private static boolean isValid(String cardNumber) {
+        return validator.setCreditCardNumber(cardNumber).validate();
     }
 
     public static String cardNumber() {
