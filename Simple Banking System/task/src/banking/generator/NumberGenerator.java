@@ -1,13 +1,13 @@
 package banking.generator;
 
-import banking.util.PropertiesLoader;
 
-import java.util.Properties;
+import banking.domain.MessageFactory;
+
 import java.util.concurrent.ThreadLocalRandom;
 
 public abstract class NumberGenerator {
 
-    protected static final Properties PROPERTIES = PropertiesLoader.getInstance().properties();
+    protected static final MessageFactory MESSAGE_FACTORY = new MessageFactory();
 
     protected static long generate(long min, long max) {
         return ThreadLocalRandom.current().nextLong(min, max);
