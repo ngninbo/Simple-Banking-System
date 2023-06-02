@@ -1,6 +1,6 @@
 package banking.repository;
 
-import banking.builder.CardFactory;
+import banking.builder.CreditCardBuilder;
 import banking.domain.StatementFactory;
 import banking.models.Card;
 import org.sqlite.SQLiteDataSource;
@@ -29,7 +29,7 @@ public class CardRepository {
         createTableCard();
     }
 
-    public static CardRepository of(String filename) {
+    public static CardRepository init(String filename) {
         return new CardRepository(filename);
     }
 
@@ -85,8 +85,11 @@ public class CardRepository {
             statement = connection.prepareStatement(statementFactory.get("SELECT_FROM_CARD_WHERE_NUMBER", cardNumber));
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                return CardFactory.createCard(resultSet.getString("number"),
-                        resultSet.getString("pin"), resultSet.getInt("balance"));
+                return CreditCardBuilder.init()
+                        .withCardNumber(resultSet.getString("number"))
+                        .withPin(resultSet.getString("pin"))
+                        .withBalance(resultSet.getInt("balance"))
+                        .build();
             }
 
         } catch (SQLException e) {

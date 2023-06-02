@@ -1,10 +1,8 @@
 package banking.generator;
 
-public class PinGenerator extends NumberGenerator {
+public class PinNumberGenerator extends NumberGenerator {
 
-    private static final PinGenerator INSTANCE = new PinGenerator();
-
-    private PinGenerator() {
+    public PinNumberGenerator() {
     }
 
     private String generatePin(int min, int max) {
@@ -15,10 +13,6 @@ public class PinGenerator extends NumberGenerator {
     private String pin() {
         return generatePin(Integer.parseInt(PROPERTIES.getProperty("MIN_PIN")),
                 Integer.parseInt(PROPERTIES.getProperty("MAX_PIN")));
-    }
-
-    public static PinGenerator getInstance() {
-        return INSTANCE;
     }
 
     @Override

@@ -12,6 +12,7 @@ public class CreditCardBuilder {
 
     private String creditCardNumber;
     private String pin;
+    private long balance;
 
     private CreditCardBuilder() {
     }
@@ -30,7 +31,12 @@ public class CreditCardBuilder {
         return this;
     }
 
+    public CreditCardBuilder withBalance(long balance) {
+        this.balance = balance;
+        return this;
+    }
+
     public Card build() {
-        return CardFactory.createCard(creditCardNumber, pin);
+        return new Card(creditCardNumber, pin, balance);
     }
 }

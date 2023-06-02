@@ -1,8 +1,6 @@
 package banking.services;
 
-import banking.builder.CreditCardBuilder;
-import banking.generator.CreditCardNumberGenerator;
-import banking.generator.PinGenerator;
+import banking.builder.CardCreator;
 import banking.models.Card;
 
 import java.util.function.BiPredicate;
@@ -54,11 +52,7 @@ public class AccountExecutorService extends TransferExecutor implements AccountS
 
     @Override
     public void createAccount() {
-        Card card = CreditCardBuilder.init()
-                .withCardNumber(CreditCardNumberGenerator.getInstance().next())
-                .withPin(PinGenerator.getInstance().next())
-                .build();
-
+        Card card = new CardCreator().create();
         cardService.saveCard(card);
 
         System.out.println(messageFactory.get("CARD_INFORMATION_AFTER_CREATION_TEXT", card.getCreditCardNumber(), card.getPin()));

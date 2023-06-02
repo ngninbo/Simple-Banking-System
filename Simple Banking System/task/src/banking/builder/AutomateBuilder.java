@@ -19,7 +19,7 @@ public class AutomateBuilder {
     }
 
     public AutomateBuilder withSession() {
-        this.account = AccountSessionService.accountSession(new CardServiceImpl(CardRepository.of(databaseFilename)));
+        this.account = AccountSessionService.accountSession(new CardServiceImpl(CardRepository.init(databaseFilename)));
         return this;
     }
 
