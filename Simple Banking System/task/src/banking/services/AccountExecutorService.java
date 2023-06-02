@@ -55,8 +55,8 @@ public class AccountExecutorService extends TransferExecutor implements AccountS
     @Override
     public void createAccount() {
         Card card = CreditCardBuilder.init()
-                .withCardNumber(CreditCardNumberGenerator.cardNumber())
-                .withPin(PinGenerator.pin())
+                .withCardNumber(CreditCardNumberGenerator.getInstance().next())
+                .withPin(PinGenerator.getInstance().next())
                 .build();
 
         cardService.saveCard(card);

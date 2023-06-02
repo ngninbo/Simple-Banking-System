@@ -20,12 +20,12 @@ public class CardServiceImpl implements CardService {
 
     @Override
     public Optional<Card> findCardByNumber(String cardNumber) {
-        return repository.findCardByNumber(cardNumber);
+        return Optional.ofNullable(repository.findByNumber(cardNumber));
     }
 
     @Override
     public long findBalanceByCardNumber(String cardNumber) {
-        return repository.findCardByNumber(cardNumber).map(Card::getBalance).orElse(0L);
+        return findCardByNumber(cardNumber).map(Card::getBalance).orElse(0L);
     }
 
     @Override

@@ -7,11 +7,11 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public abstract class NumberGenerator {
 
-    protected static final Properties PROPERTIES = PropertiesLoader.getInstance().properties();
+    protected final Properties PROPERTIES = PropertiesLoader.getInstance().properties();
 
-    protected static long generate(long min, long max) {
+    public abstract String next();
+
+    protected long next(long min, long max) {
         return ThreadLocalRandom.current().nextLong(min, max);
     }
-
-
 }

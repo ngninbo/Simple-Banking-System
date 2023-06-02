@@ -6,7 +6,6 @@ import banking.models.Card;
 import org.sqlite.SQLiteDataSource;
 
 import java.sql.*;
-import java.util.Optional;
 
 import static banking.repository.UpdateStrategy.DECREASING;
 import static banking.repository.UpdateStrategy.INCREASING;
@@ -78,13 +77,9 @@ public class CardRepository {
      * Find card by given number
      *
      * @param cardNumber card number
-     * @return Optional card object
+     * @return {@link Card} or null if not present
      */
-    public Optional<Card> findCardByNumber(String cardNumber) {
-        return Optional.ofNullable(findCard(cardNumber));
-    }
-
-    public Card findCard(String cardNumber) {
+    public Card findByNumber(String cardNumber) {
 
         try (Connection connection = dataSource.getConnection()) {
             statement = connection.prepareStatement(statementFactory.get("SELECT_FROM_CARD_WHERE_NUMBER", cardNumber));

@@ -68,17 +68,14 @@ public abstract class Menu {
      */
     protected MenuItem getMenuItem(int index, List<MenuItem> items) {
 
-        final int size = items.size();
-        if (index >= size || index < 0) {
+        if (isLower(index, items.size())) {
             System.out.println(messageFactory.from("UNKNOWN_COMMAND_TXT"));
             return MenuItem.UNKNOWN;
-        }
-
-        if (index == 0) {
+        } else if (index == 0) {
             return MenuItem.EXIT;
+        } else {
+            return items.get(index - 1);
         }
-
-        return items.get(index - 1);
     }
 
     private String format(MenuItem menuItem, int index) {
@@ -86,6 +83,10 @@ public abstract class Menu {
                 "item.display",
                 String.valueOf(MenuItem.EXIT.equals(menuItem) ? 0 : index + 1),
                 messageFactory.from(menuItem.getText()));
+    }
+
+    private boolean isLower(int value, int upper) {
+        return value >= upper || value < 0;
     }
 
 }
