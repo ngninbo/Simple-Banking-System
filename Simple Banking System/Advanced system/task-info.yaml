@@ -869,9 +869,6 @@ files:
 - name: src/banking/generator/CreditCardNumberGenerator.java
   visible: true
   learner_created: true
-- name: src/banking/builder/AutomateBuilder.java
-  visible: true
-  learner_created: true
 - name: src/banking/builder/CreditCardBuilder.java
   visible: true
   text: |
@@ -1251,6 +1248,9 @@ files:
   visible: true
   learner_created: true
 - name: src/banking/generator/NumberGenerator.java
+  visible: true
+  learner_created: true
+- name: src/banking/builder/AutomateFactory.java
   visible: true
   learner_created: true
 feedback_link: https://hyperskill.org/learn/step/8428#comment
